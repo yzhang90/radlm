@@ -1,0 +1,10 @@
+house_monitor : interceptor {
+    NODE house_thermo.house
+    PUBLISHES
+        house_report { TOPIC house_health }
+}
+
+house_health : topic {
+    FIELDS
+        flag : uint8 0
+}
