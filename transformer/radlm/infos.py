@@ -23,6 +23,9 @@ script_dir = Path(__file__).absolute()
 root_namespace = RootNamespace()
 "The global root namespace."
 
+interceptors = dict()
+"Mapping from node qname to its corresponding interceptor node."
+
 semantics = None
 "Semantics object for the language. It is created during bootstrapping."
 

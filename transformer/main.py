@@ -8,7 +8,8 @@ from time import sleep
 import sys
 import argparse
 
-from transformer.radlm import infos, language
+from transformer.astutils.names import NonExistingIdent, ExistingIdent
+from transformer.radlm import infos, language, gather
 from transformer.radlm.parser import Semantics
 
 class Exit(Exception):
@@ -37,7 +38,20 @@ def transform_spec(radl_files=None, radlm_file=None, **_):
 
     #processing the radlm_file first
     prepare_radlm_source(radlm_file)
-     
+    ########
+    # Parse
+    ########
+    try:
+        qname = infos.root_namespace.qualify(infos.source_file.stem)
+    except ExistingIdent:
+        error_noloc("Can't compile source file {},\n"
+                    "a module with name {} is already loaded."
+                    "".format(infos.source_file, infos.source_file.stem))
+    with infos.source_file.open() as f:
+        infos.radlm_ast = infos.semantics(f.read(), qname, infos.root_namespace)
+        
+    gather.do_pass(infos.radlm_ast)
+    print(infos.interceptors)
 
 if __name__ == "__main__":
 

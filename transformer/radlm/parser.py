@@ -17,10 +17,11 @@ from functools import partial
 from parsimonious.exceptions import ParseError
 from parsimonious.grammar import Grammar
 from transformer.astutils.location import Location
-from transformer.astutils.names import NonExistingIdent, ExistingIdent
+from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
 from transformer.astutils.nodeutils import clean_node, ParseVisitor, spprint_node
 from transformer.astutils.tools import BucketDict, str
-from transformer.radlm import sanitize, language, infos
+#from transformer.radlm import sanitize, language, infos
+from transformer.radlm import language, infos
 from transformer.radlm.errors import log4, error, internal_error
 from transformer.radlm.metaParser import meta_parser
 from transformer.radlm.rast import AstNode, AstVisitor, Ident
@@ -184,9 +185,9 @@ def gen_tree_to_ast(language_tree, env):
                     qname = namespace.generate("_"+kind)
                 match_dct = childs[2 if annoted else 1].match.groupdict()
                 value = match_dct['value'] if 'value' in match_dct else ''
-                if 'unit' in match_dct:
-                    normalize = language.unit_normalize[kind][match_dct['unit']]
-                    value = normalize(value)
+                #if 'unit' in match_dct:
+                #    normalize = language.unit_normalize[kind][match_dct['unit']]
+                #    value = normalize(value)
                 n = AstNode(kind, qname, [value], namespace, loc)
                 n._set_internal('kind_annot', annoted)
                 namespace.associate(qname, n)
@@ -314,8 +315,10 @@ def gen_tree_to_ast(language_tree, env):
             try:
                 node = namespace.resolve(leaf.text)
             except NonExistingIdent:
-                msg = "Undefined identifier {}".format(leaf.text)
-                error(msg, loc_of_parsimonious(leaf))
+                #msg = "Undefined identifier {}".format(leaf.text)
+                #error(msg, loc_of_parsimonious(leaf))
+                qname = RootNamespace().qualify(leaf.text)
+                node = AstNode('_ref', qname, [], namespace, loc_of_parsimonious(leaf))
             return Ident(node, loc_of_parsimonious(leaf)), namespace
         else:
             return leaf, namespace
@@ -414,7 +417,7 @@ class Semantics:
             error(msg, loc)
         log4(lambda: spprint_node(program_tree))
         ast = self.tree_to_ast(program_tree, program_qname, root_namespace)
-        ast = sanitize.update_idents(ast, root_namespace)
+        #ast = sanitize.update_idents(ast, root_namespace)
         log4(lambda: str(ast))
         return ast
 
