@@ -47,7 +47,7 @@ class Ident(Mapping):
         return str(self._qname)
     #container convention, behave like node
     def __len__(self):
-        return len(self._node)
+        return max(len(self._node),1)
     def __getitem__(self, key):
         return self._node[key]
     def __iter__(self):
@@ -114,7 +114,7 @@ class Alias(Mapping):
         return self._is_alias_of._node
     #container convention, behave like node
     def __len__(self):
-        return len(self._node)
+        return max(len(self._node),1)
     def __getitem__(self, key):
         return self._node[key]
     def __iter__(self):

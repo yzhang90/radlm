@@ -8,20 +8,21 @@ from time import sleep
 import sys
 import argparse
 
-from transformer.astutils.names import NonExistingIdent, ExistingIdent
-from transformer.radlm import infos, language, gather
+from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
+from transformer.radlm import infos, language, gather, strip, transform
 from transformer.radlm.parser import Semantics
+from transformer.radlm.utils import pretty_print
 
 class Exit(Exception):
     def __init__(self, error_code, msg):
         self.error_code = error_code
         self.msg = msg
 
-def prepare_radlm_source(filename):
+def prepare_source(filename, suffix):
     source = Path(filename)
-    if source.suffix != '.radlm':
-        raise Exit(-3, "RADLM file need to have .radlm suffix, {} given."
-                       "".format(str(filename)))
+    if source.suffix != suffix:
+        raise Exit(-3, "RADLM file need to have {} suffix, {} given."
+                       "".format(suffix, str(filename)))
     if not source.is_file():
         raise Exit(-3, str(source) + "isn't a valid file.")
     try: #We ensure the file is readable.
@@ -36,22 +37,32 @@ def transform_spec(radl_files=None, radlm_file=None, **_):
     ########
     infos.semantics = Semantics(language)
 
-    #processing the radlm_file first
-    prepare_radlm_source(radlm_file)
-    ########
-    # Parse
-    ########
-    try:
-        qname = infos.root_namespace.qualify(infos.source_file.stem)
-    except ExistingIdent:
-        error_noloc("Can't compile source file {},\n"
-                    "a module with name {} is already loaded."
-                    "".format(infos.source_file, infos.source_file.stem))
+    #processing the radlm file first
+    prepare_source(radlm_file, '.radlm')
+    ##############
+    # Parse RADLM
+    ##############
+    
+    qname = infos.root_namespace.qualify(infos.source_file.stem)
+
     with infos.source_file.open() as f:
         infos.radlm_ast = infos.semantics(f.read(), qname, infos.root_namespace)
         
     gather.do_pass(infos.radlm_ast)
-    print(infos.interceptors)
+    strip.do_pass(infos.radlm_ast)
+    pretty_print(infos.radlm_ast)
+
+
+    #processing each radl file
+    for rf in radl_files:
+        prepare_source(rf, '.radl')
+        infos.root_namespace = RootNamespace()
+        qname = infos.root_namespace.qualify(infos.source_file.stem)
+        with infos.source_file.open() as f:
+            infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
+        transform.do_pass(infos.radl_ast)
+
+
 
 if __name__ == "__main__":
 

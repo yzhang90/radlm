@@ -185,6 +185,8 @@ def gen_tree_to_ast(language_tree, env):
                     qname = namespace.generate("_"+kind)
                 match_dct = childs[2 if annoted else 1].match.groupdict()
                 value = match_dct['value'] if 'value' in match_dct else ''
+                if 'unit' in match_dct :
+                    value += match_dct['unit']
                 #if 'unit' in match_dct:
                 #    normalize = language.unit_normalize[kind][match_dct['unit']]
                 #    value = normalize(value)
