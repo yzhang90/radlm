@@ -4,19 +4,27 @@ Created on March, 2015
 '''
 
 from pathlib import Path
-from time import sleep
+import shutil, errno
 import sys
 import argparse
 
 from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
 from transformer.radlm import infos, language, gather, strip, transform
 from transformer.radlm.parser import Semantics
-from transformer.radlm.utils import pretty_print
+from transformer.radlm.utils import pretty_print, write_file
 
 class Exit(Exception):
     def __init__(self, error_code, msg):
         self.error_code = error_code
         self.msg = msg
+
+def prepare_workspace(ws_dir):
+    ws_dir = Path(ws_dir)
+    #if not ws_dir.is_dir():
+    #    raise Exit(-2, "The workspace directory {} doesn't exist.\n"
+    #            "You can change it using the --ws_dir option."
+    #            "".format(ws_dir))
+    infos.ws_dir = ws_dir
 
 def prepare_source(filename, suffix):
     source = Path(filename)
@@ -31,7 +39,10 @@ def prepare_source(filename, suffix):
         raise Exit(-3, "The source file isn't readable.")
     infos.source_file = source
 
-def transform_spec(radl_files=None, radlm_file=None, **_):
+def transform_spec(ws_dir=None, radl_files=None, radlm_file=None, **_):
+
+    prepare_workspace(ws_dir)
+
     ########
     # Bootstrap the semantics from the language definition.
     ########
@@ -50,8 +61,13 @@ def transform_spec(radl_files=None, radlm_file=None, **_):
         
     gather.do_pass(infos.radlm_ast)
     strip.do_pass(infos.radlm_ast)
-    pretty_print(infos.radlm_ast)
+    content = pretty_print(infos.radlm_ast)
+    radl_name = infos.source_file.stem + ".radl"
+    write_file(infos.ws_dir / radl_name, content)
 
+    #copy directories and files to working directory
+    for rf in radl_files:
+        prepare_source(rf, '.radl') 
 
     #processing each radl file
     for rf in radl_files:
@@ -61,7 +77,8 @@ def transform_spec(radl_files=None, radlm_file=None, **_):
         with infos.source_file.open() as f:
             infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
         transform.do_pass(infos.radl_ast)
-
+        content = pretty_print(infos.radl_ast)
+        write_file(infos.ws_dir / infos.source_file.name, content)
 
 
 if __name__ == "__main__":
@@ -73,6 +90,7 @@ if __name__ == "__main__":
     ########
     p = argparse.ArgumentParser(prog='radlm')
     p.add_argument('--version_lang', action='version', version='RADLM language ' + language.version)
+    p.add_argument('--ws_dir', default='./radlm/', metavar='DIR', help='generate files in the DIR')
 
     subs_p = p.add_subparsers(dest='cmd', title='subcommands')
     

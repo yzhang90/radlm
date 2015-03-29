@@ -23,20 +23,24 @@ def pretty_print(node, indchar='  ', indent=0):
             s += '"' + node._val + '"'
         else:
             s += node._val
+        if indent == 0:
+            s += '\n'
         return s, indent
 
     def print_node(visitor, node, indent):
         s = indchar*indent + node._typed_name + ' {\n';
         sc, _ = visitor.visit(node._children, indent+1)
         s += sc
-        s += indchar*indent + '}\n'
+        s += indchar*indent + '}'
+        if indent == 0:
+            s += '\n'
         return s, indent
 
     def print_list(visitor, l, indent):
         s = ''
         for item in l:
             sl, _ = visitor.visit(item, indent) 
-            s += sl
+            s += sl + '\n'
         return s, indent
 
     def print_dict(visitor, d, indent):
@@ -50,6 +54,8 @@ def pretty_print(node, indchar='  ', indent=0):
 
     def print_leaf(visitor, n, indent):
         s = indchar*indent + n._name
+        if indent == 0:
+            s += '\n'
         return s, indent
 
     visitor_dict = fun_dict_of((_ast,))
@@ -67,3 +73,21 @@ def pretty_print(node, indchar='  ', indent=0):
                          kind='mapacc')
     s, _ = visitor.visit(node, indent)
     return s
+
+
+def ensure_dir(path):
+    """{path} is expected to be a libpath.Path object"""
+    if path.exists():
+        if not path.is_dir():
+            raise Exception("{} should be a directory".format(dir))
+    else:
+        ensure_dir(path.parent)
+        path.mkdir()
+
+
+def write_file(filepath, filecontent):
+    d = filepath.parent
+    ensure_dir(d)
+    with filepath.open('w', encoding='UTF-8') as f:
+        f.write(filecontent)
+
