@@ -28,7 +28,12 @@ def pretty_print(node, indchar='  ', indent=0):
         return s, indent
 
     def print_node(visitor, node, indent):
-        s = indchar*indent + node._typed_name + ' {\n';
+        name = node._typed_name
+        if name.startswith('_'):
+            s = indchar*indent
+        else:
+            s = indchar*indent + node._typed_name + ' '
+        s += '{\n'
         sc, _ = visitor.visit(node._children, indent+1)
         s += sc
         s += indchar*indent + '}'

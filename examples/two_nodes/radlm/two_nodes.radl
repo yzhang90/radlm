@@ -1,0 +1,68 @@
+basic_rate : duration 100msec
+
+a : node {
+  PUBLISHES
+    a1 : publication {
+      TOPIC
+        tac
+    }
+    a_report : publication {
+      TOPIC
+        topics.a_health
+    }
+
+  PERIOD
+    basic_rate
+  CXX
+    {
+      PATH
+        "src"
+      HEADER
+        "ai.h"
+      CLASS
+        "AI"
+      FILENAME
+        "ai.cpp"
+        "a.cpp"
+
+    }
+}
+
+tac : topic {
+  FIELDS
+    t_a : int32 0
+
+}
+
+c : node {
+  SUBSCRIBES
+    a1 : subscription {
+      TOPIC
+        tac
+      MAXLATENCY
+        2msec
+    }
+
+  PERIOD
+    basic_rate
+  CXX
+    {
+      PATH
+        "src"
+      HEADER
+        "ci.h"
+      CLASS
+        "CI"
+      FILENAME
+        "ci.cpp"
+        "c.cpp"
+
+    }
+  PUBLISHES
+    c_report : publication {
+      TOPIC
+        topics.c_health
+    }
+
+}
+

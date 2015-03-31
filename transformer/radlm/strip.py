@@ -9,7 +9,7 @@ from transformer.radlm.rast import AstVisitor
 
 
 def strip_interceptor(visitor, node, _):
-    for n in node._children:
+    for n in list(node._children):
        if n._kind == 'interceptor' :
            node._children.remove(n)
  

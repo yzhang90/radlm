@@ -1,0 +1,10 @@
+a_health : topic {
+  FIELDS
+    flag : uint8 0
+}
+
+
+c_health : topic {
+  FIELDS
+    flag : uint8 0
+}

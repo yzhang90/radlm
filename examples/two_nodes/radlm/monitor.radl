@@ -1,0 +1,31 @@
+health : node {
+  SUBSCRIBES
+    a_report : subscription {
+      TOPIC
+        topics.a_health
+      MAXLATENCY
+        2msec
+    }
+    c_report : subscription {
+      TOPIC
+        topics.c_health
+      MAXLATENCY
+        2msec
+    }
+
+  PERIOD
+    1sec
+  CXX
+    {
+      PATH
+        "src"
+      HEADER
+        "health.h"
+      CLASS
+        "Health"
+      FILENAME
+        "health.cpp"
+
+    }
+}
+

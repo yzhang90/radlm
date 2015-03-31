@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     subs_p = p.add_subparsers(dest='cmd', title='subcommands')
     
-    transformp = subs_p.add_parser('transform', help='transform radl files')
+    transformp = subs_p.add_parser('trans', help='transform radl files')
     transformp.set_defaults(func=transform_spec)
 
     transformp.add_argument('radl_files', nargs='+', help='the RADL source files to be transformed')
