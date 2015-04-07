@@ -1,7 +1,7 @@
 '''
 Created on March, 2015
 
-1.Gather interceptor information and build a map
+  Gather interceptor information and build a map
   node.qname -> interceptor
 
 '''

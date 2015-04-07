@@ -6,7 +6,7 @@ a_monitor : interceptor {
     PATH "src"
     HEADER "ai.h"
     CLASS "AI"
-    FILENAME "ai.cpp" "a.cpp"
+    FILENAME "ai.cpp" "ab.cpp"
   }
 }
 

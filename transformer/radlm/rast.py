@@ -156,6 +156,8 @@ class AstNode(Mapping):
         pa = list(iter(self._children))
         raise KeyError("{a} is not among the possibilities:"
                        "{pa}".format(a=key, pa=pa))
+    def __setitem__(self, key, value):
+        self._children[key] = value
     def __iter__(self):
         return iter(self._children)
     def __getattr__(self, attr):
