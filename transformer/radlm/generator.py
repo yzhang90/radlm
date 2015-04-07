@@ -56,7 +56,15 @@ node_subscription_template = {
 '''
 }
 
-#radl_templates =
+radl_template = {
+'monitor_topics':
+'''
+{mtopic}: topic {{
+  FIELDS
+    flag : uint8 0
+}}
+'''
+}
 
 
 def app(d, templates):
@@ -87,15 +95,16 @@ def health_gen():
         nn_class = nn.title().replace('_','')
         d['node'] = nn
         d['node_name'] = n
+        d['mtopic'] = nn + '_health'
         d['mtopic_name'] = "monitor_topics." + nn + '_health'
         d['header'] = nn_class + '.h'
         d['class'] = nn_class
         d['filename'] = nn_class + '.cpp'
         app(d, interceptor_template)
         app(d, node_subscription_template)
+        app(d, radl_template)
     app(d, node_template)
     app(d, radlm_template)
-    print(d['monitor_radlm'])
     
         
 
