@@ -4,33 +4,31 @@ Created on March, 2015
 '''
 
 from pathlib import Path
-import shutil, errno
+import distutils.dir_util
 import sys
 import argparse
 
 from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
 from transformer.radlm import infos, language, gather, strip, transformer, generator
 from transformer.radlm.parser import Semantics
-from transformer.radlm.utils import pretty_print, write_file
+from transformer.radlm.utils import pretty_print, write_file, ensure_dir
 
 class Exit(Exception):
     def __init__(self, error_code, msg):
         self.error_code = error_code
         self.msg = msg
 
-def prepare_workspace(ws_dir):
-    ws_dir = Path(ws_dir)
-    if not ws_dir.is_dir():
-        raise Exit(-2, "The workspace directory {} doesn't exist.\n"
-                "You can change it using the --ws_dir option."
-                "".format(ws_dir))
+def prepare_workspace(project_dir, option):
+    if not project_dir.is_dir():
+        raise Exit(-2, "The project directory {} doesn't exist.\n"
+                       .format(project_dir))
+    ws_name = project_dir.name + '_' + option + '/'
+    parent = project_dir.parent
+    ws_dir = parent / ws_name
+    ensure_dir(ws_dir)
     infos.ws_dir = ws_dir
 
-def prepare_source(filename, suffix):
-    source = Path(filename)
-    if source.suffix != suffix:
-        raise Exit(-3, "RADLM file need to have {} suffix, {} given."
-                       "".format(suffix, str(filename)))
+def check_source(source):
     if not source.is_file():
         raise Exit(-3, str(source) + "isn't a valid file.")
     try: #We ensure the file is readable.
@@ -39,9 +37,11 @@ def prepare_source(filename, suffix):
         raise Exit(-3, "The source file isn't readable.")
     infos.source_file = source
 
-def transform_radl(ws_dir=None, radl_files=None, radlm_file=None, **_):
-
-    prepare_workspace(ws_dir)
+def transform_radl(project_dir=None, radlm_file=None, **_):
+    
+    project_dir = Path(project_dir) 
+    prepare_workspace(project_dir, 'trans')
+    distutils.dir_util.copy_tree(str(project_dir.resolve()), str(infos.ws_dir.resolve()))    
 
     ########
     # Bootstrap the semantics from the language definition.
@@ -49,7 +49,12 @@ def transform_radl(ws_dir=None, radl_files=None, radlm_file=None, **_):
     infos.semantics = Semantics(language)
 
     #processing the radlm file first
-    prepare_source(radlm_file, '.radlm')
+    source = Path(radlm_file)
+    if source.suffix != '.radlm':
+        raise Exit(-3, "RADLM file need to have {} suffix, {} given."
+                       "".format('.radlm', str(radlm_file)))
+    check_source(source)
+
     ##############
     # Parse RADLM
     ##############
@@ -65,25 +70,25 @@ def transform_radl(ws_dir=None, radl_files=None, radlm_file=None, **_):
     radl_name = infos.source_file.stem + ".radl"
     write_file(infos.ws_dir / radl_name, content)
 
-    #processing each radl file
-    for rf in radl_files:
-        prepare_source(rf, '.radl')
-        infos.root_namespace = RootNamespace()
-        qname = infos.root_namespace.qualify(infos.source_file.stem)
-        with infos.source_file.open() as f:
-            infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
-        transformer.do_pass(infos.radl_ast)
-        content = pretty_print(infos.radl_ast)
-        write_file(infos.ws_dir / infos.source_file.name, content)
+    #processing each radl file in the workspace
+    for child in infos.ws_dir.iterdir():
+        if child.suffix == '.radl':
+            check_source(child)
+            infos.root_namespace = RootNamespace()
+            qname = infos.root_namespace.qualify(infos.source_file.stem)
+            with infos.source_file.open() as f:
+                infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
+            transformer.do_pass(infos.radl_ast)
+            content = pretty_print(infos.radl_ast)
+            write_file(infos.ws_dir / infos.source_file.name, content)
 
-def generate_files(ws_dir=None, spec_file=None, **_):
+def generate_files(project_dir=None, spec_file=None, **_):
 
-    prepare_workspace(ws_dir)
-
-    prepare_source(spec_file, '.spec')
-
-    with infos.source_file.open() as f:
-        generator.process(f.read())
+    project_dir = Path(project_dir)
+    prepare_workspace(project_dir, 'gen')
+    infos.source_f.dir_util.copy_tree(str(project_dir.resolve()), str(infos.ws_dir.resolve()))
+        
+    generator.process(f.read())
 
 
 if __name__ == "__main__":
@@ -95,7 +100,6 @@ if __name__ == "__main__":
     ########
     p = argparse.ArgumentParser(prog='radlm')
     p.add_argument('--version_lang', action='version', version='RADLM language ' + language.version)
-    p.add_argument('--ws_dir', default='./radlm/', metavar='DIR', help='generate files in the DIR')
 
     subs_p = p.add_subparsers(dest='cmd', title='subcommands')
     
@@ -103,14 +107,14 @@ if __name__ == "__main__":
     transformp = subs_p.add_parser('trans', help='transform radl files')
     transformp.set_defaults(func=transform_radl)
 
-    transformp.add_argument('radl_files', nargs='+', help='the RADL source files to be transformed')
+    transformp.add_argument('project_dir', help='the project directory containing radl files')
     transformp.add_argument('-M','--radlm_file', help='the RADLM file used to transform the RADL source file')
  
     #generation option
     genp = subs_p.add_parser('gen', help='generate files from specificaiton')
     genp.set_defaults(func=generate_files)
 
-    genp.add_argument('spec_file', help='the specification from which files are generated')
+    genp.add_argument('spec_file', help='the specification used to generate radlm files and step functions')
 
     args = p.parse_args()
 

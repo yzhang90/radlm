@@ -4,7 +4,12 @@ Created on April, 2015
   Parse the spec file and generate radl/radlm files, step functions and etc.
 
 '''
+
 import re
+from pathlib import Path
+
+from transformer.radlm import infos
+from transformer.radlm.utils import write_file
 
 spec_infos = {'type'       : None,
               'period'     : None,
@@ -105,6 +110,5 @@ def health_gen():
         app(d, radl_template)
     app(d, node_template)
     app(d, radlm_template)
-    
-        
-
+    write_file(infos.ws_dir / 'monitor.radlm', d['monitor_radlm'])
+    write_file(infos.ws_dir / 'monitor_topics.radl', d['monitor_topics'])
