@@ -1,3 +1,7 @@
 [submodule "parsimonious"]
 	path = lib/parsimonious
 	url = git@github.com:lgerardSRI/parsimonious.git
+
+[submodule "sri/radler"]
+        path = radler
+        url = https://github.com/lgerardSRI/radler.git
