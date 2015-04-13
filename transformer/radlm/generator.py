@@ -45,6 +45,7 @@ node_template = {
 '''health_monitor : node {{
   SUBSCRIBES
 {node_subscription}
+  PERIOD {node_period}
   CXX {{
     PATH "{path}"
     HEADER "HealthMonitor.h"
@@ -61,7 +62,7 @@ node_subscription_template = {
 '''
 }
 
-radl_template = {
+topics_template = {
 'monitor_topics':
 '''
 {mtopic}: topic {{
@@ -69,6 +70,18 @@ radl_template = {
     flag : uint8 0
 }}
 '''
+}
+
+monitor_code_template = {
+'monitor_h_file':
+'''#include RADL_HEADER
+
+class HealthMonitor {{
+ public:
+  void step(const radl_in_t*, const radl_in_flags_t*, radl_out_t*, radl_out_flags_t*);
+}};
+'''
+
 }
 
 
@@ -80,7 +93,7 @@ def app(d, templates):
     else: 
         d[s] += v
 
-def process(spec):
+def gen(spec):
     lines = spec.splitlines()
     for line in lines:
         matchObj = re.match(r'(.*)\s?=\s?(.*)',line)
@@ -92,8 +105,10 @@ def process(spec):
         health_gen()
     
 def health_gen():
-    d = {'path'      : spec_infos['path'],
-         'maxlatency': spec_infos['maxlatency']}
+    d = {'path'       : spec_infos['path'],
+         'maxlatency' : spec_infos['maxlatency'],
+         'node_period': spec_infos['period']}
+           
     nodes = spec_infos['nodes'].split(' ')
     for n in nodes:
         nn = n.replace('.','_')
@@ -107,8 +122,10 @@ def health_gen():
         d['filename'] = nn_class + '.cpp'
         app(d, interceptor_template)
         app(d, node_subscription_template)
-        app(d, radl_template)
+        app(d, topics_template)
     app(d, node_template)
     app(d, radlm_template)
+    app(d, monitor_code_template)
     write_file(infos.ws_dir / 'monitor.radlm', d['monitor_radlm'])
     write_file(infos.ws_dir / 'monitor_topics.radl', d['monitor_topics'])
+    write_file(infos.ws_dir / spec_infos['path'] / 'HealthMonitor.h', d['monitor_h_file'])

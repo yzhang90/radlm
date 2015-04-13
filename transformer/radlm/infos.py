@@ -26,6 +26,9 @@ root_namespace = RootNamespace()
 interceptors = dict()
 "Mapping from node qname to its corresponding interceptor node."
 
+cxx = dict()
+"Mapping from node qname to its corresponding cxx info."
+
 semantics = None
 "Semantics object for the language. It is created during bootstrapping."
 

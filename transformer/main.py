@@ -64,13 +64,12 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
     with infos.source_file.open() as f:
         infos.radlm_ast = infos.semantics(f.read(), qname, infos.root_namespace)
         
-    gather.do_pass(infos.radlm_ast)
+    gather.collect_interceptors(infos.radlm_ast)
     strip.do_pass(infos.radlm_ast)
     content = pretty_print(infos.radlm_ast)
     radl_name = infos.source_file.stem + ".radl"
     write_file(infos.ws_dir / radl_name, content)
 
-    #processing each radl file in the workspace
     for child in infos.ws_dir.iterdir():
         if child.suffix == '.radl':
             check_source(child)
@@ -86,9 +85,32 @@ def generate_files(project_dir=None, spec_file=None, **_):
 
     project_dir = Path(project_dir)
     prepare_workspace(project_dir, 'gen')
-    infos.source_f.dir_util.copy_tree(str(project_dir.resolve()), str(infos.ws_dir.resolve()))
-        
-    generator.process(f.read())
+    distutils.dir_util.copy_tree(str(project_dir.resolve()), str(infos.ws_dir.resolve()))
+
+    ########
+    # Bootstrap the semantics from the language definition.
+    ########
+    infos.semantics = Semantics(language)
+
+    #processing each radl file in the workspace
+    for child in infos.ws_dir.iterdir():
+        if child.suffix == '.radl':
+            check_source(child)
+            infos.root_namespace = RootNamespace()
+            qname = infos.root_namespace.qualify(infos.source_file.stem)
+            with infos.source_file.open() as f:
+                infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
+            gather.collect_module_settings(infos.radl_ast)
+            gather.collect_cxx(infos.radl_ast)
+
+    #processing the specification
+    spec = Path(spec_file)
+    if spec.suffix != '.spec':
+        raise Exit(-3, "spec file need to have {} suffix, {} given."
+                       "".format('.spec', str(spec_file)))
+    check_source(spec)
+    with infos.source_file.open() as f:
+        generator.gen(f.read())
 
 
 if __name__ == "__main__":
@@ -107,14 +129,16 @@ if __name__ == "__main__":
     transformp = subs_p.add_parser('trans', help='transform radl files')
     transformp.set_defaults(func=transform_radl)
 
-    transformp.add_argument('project_dir', help='the project directory containing radl files')
-    transformp.add_argument('-M','--radlm_file', help='the RADLM file used to transform the RADL source file')
+    transformp.add_argument('project_dir', help='the project directory containing radl files and user source code')
+    transformp.add_argument('radlm_file', help='the RADLM file used to transform the RADL source file')
  
     #generation option
     genp = subs_p.add_parser('gen', help='generate files from specificaiton')
     genp.set_defaults(func=generate_files)
 
+    genp.add_argument('project_dir', help='the project directory containing radl files and user source code')
     genp.add_argument('spec_file', help='the specification used to generate radlm files and step functions')
+    
 
     args = p.parse_args()
 
