@@ -9,7 +9,7 @@ import sys
 import argparse
 
 from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
-from transformer.radlm import infos, language, gather, strip, transformer, generator
+from transformer.radlm import infos, language, gather, wd, strip, transformer, generator
 from transformer.radlm.parser import Semantics
 from transformer.radlm.utils import pretty_print, write_file, ensure_dir
 
@@ -100,6 +100,7 @@ def generate_files(project_dir=None, spec_file=None, **_):
             qname = infos.root_namespace.qualify(infos.source_file.stem)
             with infos.source_file.open() as f:
                 infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
+            wd.do_pass(infos.radl_ast)
             gather.collect_module_settings(infos.radl_ast)
             gather.collect_cxx(infos.radl_ast)
 

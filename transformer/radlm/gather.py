@@ -22,7 +22,7 @@ def collect_interceptors(ast):
 
 def node(visitor, node, _):
     node_name = str(node._qname)
-    infos.cxx[node_name] = {'CXX': node['CXX'],
+    infos.cxx[node_name] = {'NODE': node,
                             'MODULE': _module_settings
                            }
 
