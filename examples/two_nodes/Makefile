@@ -1,31 +1,23 @@
 WS = catkin_ws
-RADLER = ../../../radler.sh
+RADLER = ../../radler/radler.sh
 
-five_nodes: $(WS)/src
-	if [ ! -f five_nodes.radl.bak ]; then cp five_nodes.radl five_nodes.radl.bak; fi
-	$(RADLER) monitor_health five_nodes.radl
-	$(RADLER) --ws_dir $(WS)/src compile $@.radl --ROS
-	make build
+OBJS = two_nodes.radlo monitor.radlo monitor_topics.radlo
 
-build:
+two_nodes_DEPS = monitor_topics.radlo
+monitor_DEPS = monitor_topics.radlo two_nodes.radlo
+
+.PHONY: two_nodes build clean
+
+two_nodes: $(WS)/src
+	$(MAKE) monitor.radlo
 	cd $(WS) && catkin_make install
-
-.PHONY: five_nodes build $(WS)/src clean cleanall recovdr
 
 $(WS)/src:
 	mkdir -p $(WS)/src
 
 clean:
-	-rm -rf $(WS)/build
-	-rm -rf $(WS)/devel
-	-rm -rf $(WS)/install
-
-cleanall: clean recover
 	-rm -rf $(WS)
-	-rm -rf `find .. -iname \*.radlo`
-	-rm -rf `find -name \*_monitor`
 
-recover:
-	cp five_nodes.radl.bak five_nodes.radl
-	-rm -rf five_nodes.radl.bak
-
+.SECONDEXPANSION:
+$(OBJS): $$(subst .radlo,.radl,$$@) $$($$(subst .radlo,,$$@_DEPS)) $(WS)/src
+	$(RADLER) --ws_dir $(WS)/src compile $< -o $@ $(foreach obj,$($(subst .radlo,,$@_DEPS)),-O ${obj}) --ROS

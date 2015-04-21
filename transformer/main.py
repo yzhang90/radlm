@@ -30,7 +30,7 @@ def prepare_workspace(project_dir, option):
 
 def check_source(source):
     if not source.is_file():
-        raise Exit(-3, str(source) + "isn't a valid file.")
+        raise Exit(-3, str(source) + " isn't a valid file.")
     try: #We ensure the file is readable.
         source.open('r').close()
     except:
