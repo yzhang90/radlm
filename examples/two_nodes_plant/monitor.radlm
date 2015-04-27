@@ -1,0 +1,42 @@
+
+two_nodes_a_interceptor : interceptor {
+  NODE two_nodes.a
+  PUBLISHES
+    two_nodes_a_report { TOPIC monitor_topics.two_nodes_a_health }
+  CXX {
+    HEADER "TwoNodesA_Wrapper.h"
+    CLASS "TwoNodesA_Wrapper"
+    FILENAME "TwoNodesA_Wrapper.cpp"
+  }
+}
+
+two_nodes_c_interceptor : interceptor {
+  NODE two_nodes.c
+  PUBLISHES
+    two_nodes_c_report { TOPIC monitor_topics.two_nodes_c_health }
+  CXX {
+    HEADER "TwoNodesC_Wrapper.h"
+    CLASS "TwoNodesC_Wrapper"
+    FILENAME "TwoNodesC_Wrapper.cpp"
+  }
+}
+
+
+health_monitor : node {
+  SUBSCRIBES
+    two_nodes_a_report { TOPIC monitor_topics.two_nodes_a_health MAXLATENCY 2msec }
+    two_nodes_c_report { TOPIC monitor_topics.two_nodes_c_health MAXLATENCY 2msec }
+
+  PERIOD 100msec
+  CXX {
+    PATH "src/health_monitor"
+    HEADER "HealthMonitor.h"
+    CLASS "HealthMonitor"
+    FILENAME "HealthMonitor.cpp"
+  }
+}
+
+implant : implant {
+  LOCATION two_nodes.plant.black_box.h1.vm1
+  NODES health_monitor
+}

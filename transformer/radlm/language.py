@@ -238,5 +238,12 @@ class linux
     IMG string
     NODES node *
 
+##
+# Implant
+
+class implant
+    LOCATION linux
+    NODES node *
+
 """
 

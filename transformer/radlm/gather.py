@@ -20,6 +20,14 @@ def collect_interceptors(ast):
     v = AstVisitor(fun_dict_of((interceptor,)), kind='bf')
     v.visit(ast, ())
 
+def implant(visitor, node, _):
+    location = str(node['LOCATION']._qname)
+    infos.implants[location] = node['NODES']
+
+def collect_implants(ast):
+    v = AstVisitor(fun_dict_of((implant,)), kind='bf')
+    v.visit(ast, ())
+
 def node(visitor, node, _):
     node_name = str(node._qname)
     infos.cxx[node_name] = {'NODE': node,

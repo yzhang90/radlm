@@ -1,0 +1,10 @@
+
+two_nodes_a_health: topic {
+  FIELDS
+    flag : uint8 0
+}
+
+two_nodes_c_health: topic {
+  FIELDS
+    flag : uint8 0
+}

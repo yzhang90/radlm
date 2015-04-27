@@ -65,10 +65,11 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
         infos.radlm_ast = infos.semantics(f.read(), qname, infos.root_namespace)
         
     gather.collect_interceptors(infos.radlm_ast)
-    strip.do_pass(infos.radlm_ast)
-    content = pretty_print(infos.radlm_ast)
-    radl_name = infos.source_file.stem + ".radl"
-    write_file(infos.ws_dir / radl_name, content)
+    gather.collect_implants(infos.radlm_ast)
+    #strip.do_pass(infos.radlm_ast)
+    #content = pretty_print(infos.radlm_ast)
+    #radl_name = infos.source_file.stem + ".radl"
+    #write_file(infos.ws_dir / radl_name, content)
 
     for child in infos.ws_dir.iterdir():
         if child.suffix == '.radl':
@@ -80,6 +81,12 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
             transformer.do_pass(infos.radl_ast)
             content = pretty_print(infos.radl_ast)
             write_file(infos.ws_dir / infos.source_file.name, content)
+
+    strip.do_pass(infos.radlm_ast)
+    content = pretty_print(infos.radlm_ast)
+    radl_name = infos.source_file.stem + ".radl"
+    write_file(infos.ws_dir / radl_name, content)
+
 
 def generate_files(project_dir=None, spec_file=None, **_):
 

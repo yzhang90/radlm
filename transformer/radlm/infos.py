@@ -26,6 +26,9 @@ root_namespace = RootNamespace()
 interceptors = dict()
 "Mapping from node qname to its corresponding interceptor node."
 
+implants = dict()
+"Mapping from location in the plant to node qname to be appended."
+
 cxx = dict()
 "Mapping from node qname to its corresponding cxx info."
 

@@ -5,7 +5,8 @@ Created on March, 2015
 
 from transformer.radlm.rast import AstNode, AstVisitor
 from transformer.astutils.nodetrees import fun_dict_of
-
+from transformer.astutils.names import NonExistingIdent
+from transformer.radlm import infos
 
 def pretty_print(node, indchar='  ', indent=0):
     """ pretty print a node
@@ -58,7 +59,12 @@ def pretty_print(node, indchar='  ', indent=0):
         return s, indent
 
     def print_leaf(visitor, n, indent):
-        s = indchar*indent + n._name
+        node_name = n._name
+        try:
+            infos.root_namespace.lookup_node(n._qname)
+        except NonExistingIdent:
+           node_name = str(n._qname)
+        s = indchar*indent + node_name
         if indent == 0:
             s += '\n'
         return s, indent

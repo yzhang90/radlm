@@ -1,0 +1,47 @@
+basic_rate : duration 100msec
+
+a : node {
+  PUBLISHES
+    a1 { TOPIC tac }
+  PERIOD basic_rate
+  CXX {
+    PATH "src"
+    HEADER "a.h"
+    CLASS "A"
+    FILENAME "a.cpp" 
+  }
+}
+
+tac : topic {
+  FIELDS
+    t_a : int32 0
+}
+
+c : node {
+  SUBSCRIBES
+    a1 { TOPIC tac MAXLATENCY 2msec }
+  PERIOD basic_rate
+  CXX {
+    PATH "src"
+    HEADER "c.h"
+    CLASS "C"
+    FILENAME "c.cpp" 
+  }
+}
+
+plant : plant { MACHINES
+  black_box : machine {
+    OS h1 : certikos { VMS
+      vm1 { 
+        OS {
+          IP 192.168.45.69
+          NODES_UID 1000
+          IMG "ubuntu-14.04.img"
+          NODES 
+            a
+            c
+        }
+      }
+    }
+  }
+}

@@ -31,6 +31,16 @@ def transform_node(visitor, node, _):
            if cxx['CLASS']:
                node['CXX']['CLASS'] = cxx['CLASS']
 
+def transform_linux(visitor, node, _):
+    qname = str(node._qname)
+    if node._name.startswith('_'):
+       qname = qname.replace('.'+node._name, '')
+    implant = infos.implants.get(qname)
+    if implant:
+       for n in implant:
+           node['NODES'].append(n)
+
 def do_pass(ast):
-    v = AstVisitor({'node' : transform_node}, kind='bf')
+    v = AstVisitor({'node' : transform_node,
+                    'linux': transform_linux}, kind='bf')
     v.visit(ast, ())
