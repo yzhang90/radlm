@@ -109,6 +109,8 @@ class cmake_library
     PATH string ?
     CMAKE_MODULE string
     CMAKE_COMPONENTS string *
+    CMAKE_VAR_LIBRARIES string ?     #defaults to {CMAKE_MODULE}_LIBRARIES
+    CMAKE_VAR_INCLUDE_DIRS string ?  #defaults to {CMAKE_MODULE}_INCLUDE_DIRS
 
 class static_library
     PATH string ?

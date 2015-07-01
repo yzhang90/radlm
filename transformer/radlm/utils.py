@@ -15,6 +15,10 @@ def pretty_print(node, indchar='  ', indent=0):
     def _ast(visitor, node, indent):
         return visitor.visit(node._children, indent)
 
+    def _alias(visitor, node, indent):
+        s = indchar*indent + node._name + " = " + str(node._val) + '\n'
+        return s, indent
+
     def print_type(visitor, node, indent):
         if node._get_internal('kind_annot', None):
             s = indchar*indent + node._typed_name + ' '
@@ -69,7 +73,7 @@ def pretty_print(node, indchar='  ', indent=0):
             s += '\n'
         return s, indent
 
-    visitor_dict = fun_dict_of((_ast,))
+    visitor_dict = fun_dict_of((_ast, _alias,))
 
     types = ['int8', 'uint8', 'int16', 'uint16', 'int32', 'uint32', 'int64', 'uint64',
              'float32', 'float64', 'bool', 'string', 'duration', 'time', 'ip']
