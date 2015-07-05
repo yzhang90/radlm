@@ -4,7 +4,7 @@ Created on March, 2015
 
 '''
 
-version = 'RADLM 0.987'
+version = 'RADLM 0.988'
 
 extra_keywords = {
 #C++ keywords
@@ -148,6 +148,7 @@ class topic
 
 class publication
     TOPIC topic
+    EACH uint32 ?
 
 class subscription
     TOPIC topic
