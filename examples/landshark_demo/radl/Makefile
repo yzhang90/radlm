@@ -60,7 +60,7 @@ penn_baremetal_plant cmu_baremetal_plant sri_baremetal_plant:
 	@echo "Building $@"
 	$(MAKE) use_$(patsubst %_baremetal_plant,%,$@)_devices
 	$(MAKE) baremetal.radlo
-	#$(MAKE) build
+	$(MAKE) build
 
 penn_certikos_plant cmu_certikos_plant sri_certikos_plant:
 	@echo "Building $@"

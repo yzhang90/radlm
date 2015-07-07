@@ -30,7 +30,7 @@ void HealthMonitor::step(const radl_in_t *in, const radl_in_flags_t *inflags,
   }
 
   if(radl_is_timeout(inflags->landshark_fsm_report)) {
-    lanshark_fsm_state = landshark_fsm_state | 1;
+    landshark_fsm_state = landshark_fsm_state | 1;
   } else {
     if(radl_is_timeout(in->landshark_fsm_report->flag)) {
       landshark_fsm_state = landshark_fsm_state | 2;
@@ -40,7 +40,7 @@ void HealthMonitor::step(const radl_in_t *in, const radl_in_flags_t *inflags,
   }
 
   if(radl_is_timeout(inflags->landshark_base_report)) {
-    lanshark_base_state = landshark_base_state | 1;
+    landshark_base_state = landshark_base_state | 1;
   } else {
     if(radl_is_timeout(in->landshark_base_report->flag)) {
       landshark_base_state = landshark_base_state | 2;

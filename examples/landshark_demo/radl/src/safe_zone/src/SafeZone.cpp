@@ -1,6 +1,6 @@
 #include "SafeZone.h"
 
-Safezone::SafeZone() {
+SafeZone::SafeZone() {
   this->center_x = 0;
   this->center_y = 0;
   this->radius = 0;
