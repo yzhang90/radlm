@@ -1,0 +1,65 @@
+landshark_teleop : node {
+  DEFS
+    XBOX_WIRED: uint8 1
+    XBOX_WIRELESS: uint8 2
+  DEFS
+    device: string "/dev/xbox_wired/js0"
+    jstype = XBOX_WIRED
+    deadzone: float32 0.20
+    heartbeat_timeout: duration 0msec
+  PUBLISHES
+    base { TOPIC topics.t__base }
+    estop { TOPIC topics.t__estop }
+    over_ride { TOPIC topics.t__teleop_over_ride }
+    turret_pan { TOPIC topics.t__teleop_turret_pan }
+    turret_tilt { TOPIC topics.t__teleop_turret_tilt }
+    moog_pan { TOPIC topics.t__teleop_moog_pan }
+    moog_tilt { TOPIC topics.t__teleop_moog_tilt }
+    moog_zoom { TOPIC topics.t__teleop_moog_zoom }
+    trigger { TOPIC topics.t__teleop_paintball_trigger }
+  PERIOD global.joystick_period
+  PATH "src/landshark_teleop"
+  CXX { PATH "src" HEADER "LandsharkJoystick.h" CLASS "LandsharkJoystick" FILENAME
+  "LandsharkJoystick.cpp" LIB boostlib }
+}
+
+landshark_base : node {
+  DEFS
+    serial_number: uint64 64976
+  PUBLISHES
+    battery { TOPIC topics.t__base_battery_status }
+    encoder { TOPIC topics.t__base_wheel_encoder }
+    actuator { TOPIC topics.t__base_actuator_input }
+    status { TOPIC topics.t__base_status }
+  SUBSCRIBES
+    base { TOPIC topics.t__base MAXLATENCY global.base_latency }
+    estop { TOPIC topics.t__estop MAXLATENCY global.base_latency }
+  PERIOD global.joystick_period
+  PATH "src/landshark_base"
+  CXX { LIB usb4_lib PATH "src" HEADER "LandsharkBase.h" CLASS "LandsharkBase" FILENAME "LandsharkBase.cpp" "usdigital.c" LIB boostlib }
+}
+
+
+plant : plant { MACHINES
+  blackbox : machine {
+    OS {
+      IP 130.107.95.69
+      NODES_UID 1000
+      IMG "ubuntu-14.04.img"
+      NODES 
+        landshark_base 
+        landshark_teleop
+    }
+  }
+}
+
+usb4_lib : cmake_library { 
+  PATH "src/landshark_base/cmake"
+  CMAKE_MODULE "USB4"
+}
+
+boostlib : cmake_library {
+  CMAKE_MODULE "Boost"
+  CMAKE_COMPONENTS "thread" "system"
+}
+

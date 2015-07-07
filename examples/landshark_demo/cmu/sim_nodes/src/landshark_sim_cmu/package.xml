@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>landshark_sim_cmu</name>
+  <version>0.0.0</version>
+  <description>CMU modifications to landshark_sim files</description>
+
+  <maintainer email="jason.larkin@spiralgen.com">Jason Larkin</maintainer>
+  <author email="jason.larkin@spiralgen.com">Jason Larkin</author> 
+  <license>TODO</license>
+  <url type="website">http://www.spiralgen.com</url> 
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+<!--  <build_depend>landshark_msgs</build_depend>-->
+<!--  <build_depend>landshark_sim</build_depend>-->
+
+<!--  <run_depend>landshark_sim</run_depend>-->
+<!--  <run_depend>landshark_msgs</run_depend>-->
+</package>

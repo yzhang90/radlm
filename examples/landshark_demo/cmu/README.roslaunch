@@ -1,0 +1,8 @@
+roslaunch landshark_gps_meters landshark_gps_meters.launch
+roslaunch landshark_2dnav map_server.launch
+roslaunch landshark_2dnav ekf_template.launch
+roslaunch landshark_2dnav fake_localization.launch
+roslaunch landshark_2dnav move_base_only.launch
+roslaunch landshark_2dnav local_pp.launch
+roslaunch landshark_2dnav control.launch
+roslaunch landshark_description landshark_description.launch

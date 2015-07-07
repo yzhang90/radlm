@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="python_map_server" pkg="landshark_2dnav" type="map_server.py" args="$(find landshark_2dnav)"/> 
+</launch>

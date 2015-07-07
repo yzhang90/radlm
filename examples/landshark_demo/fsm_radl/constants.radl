@@ -1,0 +1,126 @@
+PathPlanner : struct { FIELDS 
+  NONE: uint8 0
+  START: uint8 1
+  STOP: uint8 2
+}
+
+NavSatFix : struct { FIELDS
+  COVARIANCE_TYPE_UNKNOWN: uint8 0
+  COVARIANCE_TYPE_APPROXIMATED: uint8 1
+  COVARIANCE_TYPE_DIAGONAL_KNOWN: uint8 2
+  COVARIANCE_TYPE_KNOWN: uint8 3
+}
+
+NavSatStatus : struct { FIELDS
+  STATUS_NO_FIX: int8 -1
+  STATUS_FIX: int8 0
+  STATUS_SBAS_FIX: int8 1
+  STATUS_GBAS_FIX: int8 2
+  SERVICE_GPS: uint16 1
+  SERVICE_GLONASS: uint16 2
+  SERVICE_COMPASS: uint16 4
+  SERVICE_GALILEO: uint16 8
+}
+
+PaintballTrigger : struct { FIELDS
+  NONE: uint8 0
+  SINGLE_SHOT: uint8 1
+  TRIPLE_SHOT: uint8 2
+  BURST_SHOT: uint8 3
+}
+
+BaseStatus : struct { FIELDS
+  NORMAL: uint8 0
+  ESTOP: uint8 1
+  FAILURE: uint8 2
+}
+
+#ControllerSelect { FIELDS
+#  OFF: uint8 0
+#  ON: uint8 1
+#  RESET: uint8 2
+#  NONE: uint8 3
+#}
+#
+#ControllerStatus { FIELDS
+#  OFF: uint8 0               # controller is OFF
+#  ON: uint8 1                # controller is ON, sending valid Twist msg
+#  TURNING_ON: uint8 2        # controller is trying to turn ON
+#  FAIL: uint8 3              # controller failed to turn ON
+#  GOAL_SUCCESS: uint8 4      # controller reached GOAL
+#  GOAL_FAIL: uint8 5         # controller failed to reach GOAL
+#  NO_MAP: uint8 6            # controller failed because it does not have a map
+#  NO_GOAL: uint8 7           # controller failed because it does not have a goal
+#}
+
+EStop { FIELDS
+  NONE: uint8 0
+  SET: uint8 1
+  RESET: uint8 2
+}
+
+MuxSelect { FIELDS
+  NONE: uint8 0
+  JOY: uint8 1
+  CCC: uint8 2
+  GPP: uint8 3
+}
+
+MuxStatus { FIELDS
+  JOY: uint8 1
+  CCC: uint8 2
+  GPP: uint8 3
+}
+
+CCCRequest { FIELDS
+  NONE: uint8 0
+  ENGAGE: uint8 1
+  DISENGAGE: uint8 2
+}
+
+CCCStatus { FIELDS
+  OFF: uint8 0
+  ON: uint8 1
+  ENGAGED_GUARANTEE: uint8 2
+  ENGAGED_NO_GUARANTEE: uint8 3 
+  FAILURE: uint8 4
+  TRYING: uint8 5
+}
+
+PPRequest { FIELDS
+  NONE: uint8 0
+  ENGAGE: uint8 1
+  DISENGAGE: uint8 2
+}
+
+PPStatus { FIELDS
+  OFF: uint8 0
+  ON: uint8 1
+  ENGAGED: uint8 2
+  FAILURE: uint8 3
+  TRYING: uint8 4
+  GOAL_SUCCESS: uint8 5
+  GOAL_FAIL: uint8 6
+}
+
+ControllerSelect { FIELDS
+  NONE: uint8 0
+  JOY: uint8 1
+  CCC: uint8 2
+  PP: uint8 3
+}
+
+ControllerStatus { FIELDS
+  NONE: uint8 0
+  JOY: uint8 1
+#SWITCHING_TO_JOY
+  CCC: uint8 2
+#SWITCHING_TO_CCC
+  PP: uint8 3
+#SWITCHING_TO_PP
+}
+
+MaxWaitCycle { FIELDS
+  CCC: uint8 3
+  PP: uint8 3
+}

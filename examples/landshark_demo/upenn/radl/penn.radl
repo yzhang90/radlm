@@ -1,0 +1,56 @@
+boostlib : cmake_library {
+  CMAKE_MODULE "Boost"
+  CMAKE_COMPONENTS "thread" "system"
+}
+
+
+ccclib : static_library {
+  PATH "src/penn_ccc/src/simulink"
+  HEADER_PATHS "ccclib"
+  CXX { PATH "ccclib" FILENAME
+  # put all the simulink generated code here  
+    "CCC_data.c" "CCC.c"
+  }
+}
+
+estimatorlib : static_library {
+  PATH "src/penn_rse/src/simulink"
+  HEADER_PATHS "estimatorlib"
+  CXX { PATH "estimatorlib" FILENAME
+### put all the simulink generated code here  
+"RSE_data.c" "RSE.c" "ldl.c" "matrix_support.c" "solver.c" "util.c" "testsolver.c"
+  }
+}
+
+
+#############    Controller stubs    #############
+
+penn_ccc : node  {
+  PATH "src/penn_ccc"
+  PUBLISHES
+    base { TOPIC topics.t__ccc_base}
+    ccc_status { TOPIC topics.t__ccc_status }
+  SUBSCRIBES
+    ccc_request { TOPIC topics.t__fsm_ccc_request MAXLATENCY global.base_latency }
+    est_velocity { TOPIC topics.t__estimated_velocity MAXLATENCY global.base_latency}
+    ref_velocity { TOPIC topics.t__ccc_reference_speed MAXLATENCY global.base_latency}
+  PERIOD global.ccc_period
+  CXX { PATH "src" HEADER "LandsharkCCC.h" CLASS "LandsharkCCC" FILENAME "LandsharkCCC.cpp" 
+    LIB ccclib LIB boostlib }
+}
+
+penn_rse : node  {
+  PATH "src/penn_rse"
+  PUBLISHES
+    est_velocity { TOPIC topics.t__estimated_velocity}
+    rse_status { TOPIC topics.t__rse_status }
+  SUBSCRIBES
+    gps_velocity { TOPIC topics.t__gps_velocity MAXLATENCY global.base_latency }
+    encoder { TOPIC topics.t__base_wheel_encoder MAXLATENCY global.base_latency }
+    actuator { TOPIC topics.t__base_actuator_input MAXLATENCY global.base_latency}
+  PERIOD global.estimator_period
+  CXX { PATH "src" HEADER "LandsharkStateEstimator.h" CLASS "LandsharkStateEstimator"
+    FILENAME "LandsharkStateEstimator.cpp" 
+    LIB estimatorlib LIB boostlib }
+}
+

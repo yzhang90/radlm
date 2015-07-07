@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="is_spoofable" value="$(optenv IS_SPOOFABLE 1)" />
+  
+  <node pkg="landshark_spoofing" type="imu_spoofer" name="imu_spoofer" output="screen" if="$(arg is_spoofable)"/>
+  
+  <node pkg="landshark_imu" type="landshark_imu_node" name="landshark_imu_node" output="screen">
+    <remap from="/imu/data" to="/landshark/imu"/>
+    <remap from="/imu/magnetometer" to="/landshark/magnetometer"/>
+    <param name="time_offset" value="-0.040" />
+    <param name="port"  type="string" value="/dev/ttyACM0" />
+    <param name="autostart" type="bool" value="true" />
+    <param name="frame_id"  type="string" value="/landshark/imu" />
+    <param name="autocalibrate" type="bool" value="true" />
+    <param name="angular_velocity_stdev" type="double" value="0.00017" />
+    
+    <remap from="/imu/data" to="/landshark/imu_true" if="$(arg is_spoofable)"/>
+  </node>
+
+</launch>

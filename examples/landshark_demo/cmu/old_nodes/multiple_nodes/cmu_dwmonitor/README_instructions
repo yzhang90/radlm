@@ -1,0 +1,39 @@
+
+
+
+#-----------------------------------------------------------  
+HRL
+
+for Nov 15, just make it work with hard-coded coordinate
+obstacle.x,y,z from sensor data (radar)
+
+if you are too close to obstacle, it will not let you move away 
+
+publish debug information
+#-----------------------------------------------------------  
+
+#-----------------------------------------------------------  
+dwmonitor.c -> belgium student working on proof, SSE
+
+
+in teleopFilterCheck.h
+line 21
+    double wallDist;
+    bool gpsMode;
+    bool obstaclesConverted;
+    bool readObsFromTop;
+
+
+
+
+being able to send in obstacle 
+
+subscribe(base_vel)
+subscribe(safeVel)
+
+publish(min(base_vel,safeVel))
+
+if you want to have multiple velocities, multiple controllers,
+here's how you take the min
+
+

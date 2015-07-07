@@ -1,0 +1,36 @@
+period : duration 1000msec
+t__x : topic { FIELDS data: uint8 0 }
+
+node_a : node {
+  PUBLISHES
+    x { TOPIC t__x }
+  PERIOD period
+  CXX { PATH "src/ros" HEADER "a.h" CLASS "NodeA"
+    LIB roscpp_lib rosconsole_lib 
+   }
+}
+
+plant : plant { MACHINES
+  blackbox : machine {
+    OS {
+      NODES_UID 1000
+      IMG "ubuntu-14.04.img"
+      NODES 
+        node_a 
+        #node_b
+    }
+  }
+}
+
+
+roscpp_lib : cmake_library {
+  PATH "/opt/ros/indigo/share/roscpp/cmake"
+  CMAKE_MODULE "roscpp"
+}
+
+rosconsole_lib : cmake_library {
+  PATH "/opt/ros/indigo/share/rosconsole/cmake"
+  CMAKE_MODULE "rosconsole"
+}
+
+

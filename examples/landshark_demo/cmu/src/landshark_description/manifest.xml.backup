@@ -1,0 +1,15 @@
+<package>
+  <description brief="landshark_description">
+
+     landshark_description: This package contains the description (mechanical, kinematic, visual, etc.) of the Landshark.
+
+  </description>
+  <author>Thomas</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/landshark_description</url>
+  <depend package="urdf"/>
+  <depend package="xacro"/>
+</package>
+
+

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Commands</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Commands"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2014-11-10T09:25-0800"/>
+<meta name="author" content="Leonard Gerard"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Commands</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 radler.sh</a></li>
+<li><a href="#sec-2">2 The radler script</a>
+<ul>
+<li><a href="#sec-2-1">2.1 Generic arguments</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1 <code>--ws_dir</code></a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2 Compile subcommand</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1 The radl description file</a></li>
+<li><a href="#sec-2-2-2">2.2.2 <code>--object_files</code></a></li>
+<li><a href="#sec-2-2-3">2.2.3 <code>--object_dest</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> radler.sh</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>  radler.sh is a simple bash script used to run the actual python radler script radler/main.py
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> The radler script</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>The script may be used to do handle object files with the subcommands <code>obj_version</code> and <code>obj_compatible</code> or to compile a radl description with the <code>compile</code> subcommand.
+The script has two levels of arguments. The arguments before the subcommand and the one after, specific to the subcommand.
+</p>
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Generic arguments</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<p>The full list of arguments is provided by the <code>--help</code> argument.
+</p>
+</div>
+
+<div id="outline-container-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> <code>--ws_dir</code></h4>
+<div class="outline-text-4" id="text-2-1-1">
+
+<p>This is used to specify where is the workspace directory. The workspace directory is where the files are generated. This is by default equalt to <code>src</code>.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Compile subcommand</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<p>The full list of arguments for the <code>compile</code> subcommand is available as the <code>--help</code> argument to the subcommand (<code>radler.sh compile --help</code>).
+</p>
+</div>
+
+<div id="outline-container-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> The radl description file</h4>
+<div class="outline-text-4" id="text-2-2-1">
+
+<p>The radl description file is a positional compulsory argument. It has to be a file with the '.radl' extension.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> <code>--object_files</code></h4>
+<div class="outline-text-4" id="text-2-2-2">
+
+<p>To compile a radl description which depends on other modules, one has to give the object files of those modules with this argument.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> <code>--object_dest</code></h4>
+<div class="outline-text-4" id="text-2-2-3">
+
+<p>By default, the generated object file has the same name as its module, with the '.radlo' extension. Moreover it is by default written at the root of the workspace directory. This command allows to change the name and directory of the generated object file.
+</p></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2014-11-10T09:25-0800</p>
+<p class="author">Author: Leonard Gerard</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

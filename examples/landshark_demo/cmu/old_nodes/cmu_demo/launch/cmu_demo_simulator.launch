@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<launch>
+
+<!--webots_simulator-->
+  <arg name="is_spoofable" value="$(optenv IS_SPOOFABLE true)" />
+  <!-- Spoofers -->
+  <group if="$(arg is_spoofable)">
+    <node pkg="landshark_spoofing" type="gps_spoofer" name="gps_spoofer" output="screen" />
+    <node pkg="landshark_spoofing" type="wheel_encoder_spoofer" name="wheel_encoder_spoofer" output="screen" />
+    <node pkg="landshark_spoofing" type="odometry_spoofer" name="odometry_spoofer" output="screen" />
+    <node pkg="landshark_spoofing" type="imu_spoofer" name="imu_spoofer" output="screen" />
+    <param name="/sim/gps_topic" value="/gps_true" />
+    <param name="/sim/wheel_encoder_topic" value="/wheel_encoder_true" />
+    <param name="/sim/odometry_topic" value="/odom_true" />
+    <param name="/sim/imu_topic" value="/imu_true" />
+  </group>
+  <!-- Parameters for the simulator-->
+  <!-- Image transport quality -->
+  <param name="/landshark/front_camera/compressed/jpeg_quality" value="50"/>
+  <param name="/landshark/gun_camera/compressed/jpeg_quality" value="50"/>
+  <param name="/landshark/moog_left_camera/compressed/jpeg_quality" value="50"/>
+  <param name="/landshark/moog_right_camera/compressed/jpeg_quality" value="50"/>
+  <param name="/landshark/rear_camera/compressed/jpeg_quality" value="50"/>
+  <!-- The rate at which webots processes IO -->
+  <param name="/sim/webots_step_rate" value="100.0" />
+  <!-- GPS publishing frequency -->
+  <param name="/sim/gps_pub_rate" value="5.0" />
+  <!-- Inertial sensors publishing frequency -->
+  <param name="/sim/sensor_pub_rate" value="50.0" />
+  <!-- Camera images publishing frequency -->
+  <param name="/sim/image_pub_rate" value="15.0" />
+  <!-- Joint state publishing frequency -->
+  <param name="/sim/jointstate_pub_rate" value="50.0" />
+  <!-- Information publishing frequency -->
+  <param name="/sim/info_pub_rate" value="1.0" />
+  <!-- Prefix for topics published by the simulator controller -->
+  <param name="/sim/pub_topic_prefix" value="/landshark" />
+  <!-- Prefix for the control messages listened to by controller -->
+  <param name="/sim/sub_topic_prefix" value="/landshark_control" />
+  <!-- Sync initial poses from all sensors -->
+  <param name="/sim/sync_initial_pose" value="true" />
+  <!-- Latitude and longitude for the origin (for GPS NavSatFix) -->
+  <param name="/sim/latitude" value="37.457119" />
+  <param name="/sim/longitude" value="-122.173513" />
+  <param name="use_msg_auth" value="$(optenv USE_MSG_AUTH false)" />
+  <param name="msg_auth" value="auth" />
+  <!-- Start Webots Simulator with specified wbt file
+       (the wbt file should use the landshark_sim controller)-->
+  <node pkg="landshark_sim" type="start_webots" 
+    args="$(find cmu_demo)/worlds/cmu_demo.wbt"
+    name="webots" output="screen" required="true" >
+    <param name="compressed/format" value="jpeg"/>
+    <param name="msg_auth" value="auth" />
+  </node> 
+  <include file="$(find landshark_description)/launch/landshark_description.launch"/>
+<!--webots_simulator-->
+
+</launch> 

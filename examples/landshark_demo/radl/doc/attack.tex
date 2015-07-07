@@ -1,0 +1,57 @@
+
+The HACMS landshark system has been designed to prevent certain kinds of attacks. These are
+listed in Section~\ref{sec:attack-protected}.  Some aspects of the system have not yet been
+covered and are out of scope.
+These are listed in Section~\ref{sec:attack-out-of-scope}. 
+
+The red team will have access to the following to attempt to break into the Landshark or disrupt
+communication.
+\begin{enumerate}
+  \item	Wireless radio communication between the Operator’s Control Unit (OCU) and the
+    LandShark.
+  \item	Full access to VM5, one of the 5 virtual machines running on the Black Box under
+    Certikos including the USB ports on the front of the blackbox.
+\end{enumerate}
+
+\section{Protected components}
+\label{sec:attack-protected}
+This section lists the protected components of the system. 
+\begin{enumerate}
+  \item The communication between VM1 and the OCU has been secured using IPsec and Linux
+    firewall.
+    \begin{enumerate}
+      \item This should prevent spoofing of the OCU or VM1 by attackers.
+      \item This should prevent replay attacks.
+    \end{enumerate}
+  \item The communication between different VMs using the Kestrel stack using shared memory
+    protected by Certikos.
+  \item The system should be resilient to unplugging or spoofing one (and only one) of the following sensors
+    \begin{enumerate}
+      \item GPS
+      \item Left side odometry
+      \item Right side odometry
+    \end{enumerate}
+  %\item	Denial of Service (DoS) attacks over the radio?
+  %\item	Denial of Service (DoS) attacks on a mailbox?
+\end{enumerate}
+
+
+\section{Unprotected components (out of scope)}
+\label{sec:attack-out-of-scope}
+The following things are not yet protected, so they are out of scope.
+The red team may not attack the landshark system in the following ways.
+\begin{enumerate}
+
+  \item You may not modify the CF card except inside partition 13 (the Red Team VM).
+  \item You may not read the IPSec private key stored in the partition 5 of the CF.
+  \item	You may not attack the OCU. You may, however, try to spoof the IP packets from VM1 to the OCU.
+  \item	You may not plug in any device in the back of the blackbox. 
+  \item	You may not turn off power to the blackbox.
+  \begin{enumerate}
+    \item The firmware (specifically in the base controller) has not been protected. If the
+      blackbox is powered off, it will keep moving (if it was moving at the time of the
+      poweroff).
+    \item This may corrupt the CF card.
+  \end{enumerate}
+\end{enumerate}
+

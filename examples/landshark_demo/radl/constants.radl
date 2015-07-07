@@ -1,0 +1,103 @@
+PathPlanner : struct { FIELDS 
+  NONE: uint8 0     
+  START: uint8 1  # Start the Path Planner
+  STOP: uint8 2   # Stop the Path Planner
+}
+
+NavSatFix : struct { FIELDS
+  COVARIANCE_TYPE_UNKNOWN: uint8 0
+  COVARIANCE_TYPE_APPROXIMATED: uint8 1
+  COVARIANCE_TYPE_DIAGONAL_KNOWN: uint8 2
+  COVARIANCE_TYPE_KNOWN: uint8 3
+}
+
+NavSatStatus : struct { FIELDS
+  STATUS_NO_FIX: int8 -1
+  STATUS_FIX: int8 0
+  STATUS_SBAS_FIX: int8 1
+  STATUS_GBAS_FIX: int8 2
+  SERVICE_GPS: uint16 1
+  SERVICE_GLONASS: uint16 2
+  SERVICE_COMPASS: uint16 4
+  SERVICE_GALILEO: uint16 8
+}
+
+PaintballTrigger : struct { FIELDS
+  NONE: uint8 0
+  SINGLE_SHOT: uint8 1
+  TRIPLE_SHOT: uint8 2
+  BURST_SHOT: uint8 3
+}
+
+BaseStatus : struct { FIELDS
+  NORMAL: uint8 0     # Operating normally
+  ESTOP: uint8 1      # In ESTOP mode, sending zero to the actuators
+  FAILURE: uint8 2    # Incoming message timeout, sending zero to the actuators
+}
+
+EStop { FIELDS
+  NONE: uint8 0
+  SET: uint8 1        # Go into Base:ESTOP mode
+  RESET: uint8 2      # Reset Base:ESTOP mode
+}
+
+CCCRequest { FIELDS
+  NONE: uint8 0
+  ENGAGE: uint8 1
+  DISENGAGE: uint8 2
+}
+
+CCCStatus { FIELDS
+  OFF: uint8 0
+  ON: uint8 1
+  ENGAGED_GUARANTEE: uint8 2
+  ENGAGED_NO_GUARANTEE: uint8 3
+  FAILURE: uint8 4
+  TRYING: uint8 5
+}
+
+RSEStatus { FIELDS
+  INIT : uint8 0
+  GOOD : uint8 1
+  BAD : uint8 2
+}
+
+PPRequest { FIELDS
+  NONE: uint8 0
+  ENGAGE: uint8 1
+  DISENGAGE: uint8 2
+}
+
+PPStatus { FIELDS
+  OFF: uint8 0
+  ON: uint8 1
+  ENGAGED: uint8 2
+  FAILURE: uint8 3
+  TRYING: uint8 4
+  GOAL_SUCCESS: uint8 5
+  GOAL_FAIL: uint8 6
+}
+
+ControllerSelect { FIELDS
+  NONE: uint8 0
+  JOY: uint8 1    # Switch to JOY mode
+  CCC: uint8 2    # Switch to CCC mode
+  PP: uint8 3     # Switch to PP mode
+}
+
+# The FSM mode
+ControllerStatus { FIELDS
+  JOY: uint8 0
+  ESTOP: uint8 1
+  CCC: uint8 2
+  PP: uint8 3
+}
+
+MaxWaitCycle { FIELDS
+  CCC: uint8 4
+  PP: uint8 4
+  ESTOP: uint8 4
+  CCC2JOY : uint8 4
+  PP2JOY : uint8 4
+  ESTOP2JOY : uint8 4
+}

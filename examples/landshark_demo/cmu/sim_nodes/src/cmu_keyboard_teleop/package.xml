@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>cmu_keyboard_teleop</name>
+  <version>0.0.0</version>
+  <description>The cmu_keyboard_teleop package</description>
+
+  <maintainer email="aravind@ai.sri.com">Aravind Sundaresan</maintainer>
+  <license>TODO</license>
+  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>landshark_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+  <build_depend>landshark_msgs</build_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>landshark_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>visualization_msgs</run_depend>
+  <run_depend>landshark_msgs</run_depend>
+</package>

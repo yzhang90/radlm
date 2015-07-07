@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <param name = "abv_gps_topic" value="/abv/gps"/>
+    <param name = "abv_gps_speed_topic" value="/abv/gps_speed"/>
+    <param name = "sv_speed_topic" value="/sv/speed"/>
+    <param name = "dwmonitor_status_topic" value="/hrl/dwmonitor/status" />
+    <param name = "dwmonitor_switch_topic" value="/hrl/dwmonitor/switch" />
+    <param name = "dwmonitor_obstacle_topic" value="/hrl/dwmonitor/obstacle" />
+    <param name = "dwmonitor_safeSpeed_topic" value="/hrl/dwmonitor/safeSpeed" />
+    <param name = "dwmonitor_minSpeed_topic" value="/hrl/dwmonitor/minSpeed" />   
+    <param name = "dt" value = "0.1" /> 
+    <param name = "safetyClearance1" value="1.5" />
+    <param name = "safetyClearance2" value="2.5" />
+    <param name = "accel_lin_max" value = "8.0" /> 
+    <param name = "accel_ang_max" value = "1.0" />
+    <param name = "vel_ang_max" value = "1.0" />
+    <param name = "vel_lin_max" value = "75.0" />
+    <param name = "hrl" value = "on" /> 
+    <param name = "max_obs_vel" value = "1" />
+    <param name = "epsilon" value = "5.0" />
+    <param name = "max_obs_dist" value = "10" />
+   <node pkg="hrl_dwmonitor" type="hrl_dwmonitor" name="hrl_dwmonitor" output="screen" >  
+  </node>
+</launch>

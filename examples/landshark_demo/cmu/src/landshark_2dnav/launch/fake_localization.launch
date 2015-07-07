@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+<node pkg="fake_localization" type="fake_localization" name="fake_localization">
+
+   <param name="odom_frame_id"             value="odom"/>
+<!--   <param name="odom_frame_id"             value="odom_stub"/>-->
+   <param name="base_frame_id"             value="landshark/base_footprint"/>
+   <param name="global_frame_id"           value="map"/> 
+   <remap from="base_pose_ground_truth"    to="radl/odom" /> 
+<!--   <remap from="base_pose_ground_truth"    to="landshark/odom_stub" /> -->
+
+</node>
+
+</launch>

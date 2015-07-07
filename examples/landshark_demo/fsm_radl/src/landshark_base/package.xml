@@ -1,0 +1,20 @@
+<package>
+  <name>landshark_base</name>
+  <version>1.1.0</version>
+  <description> 
+    This package provides an interface to control the base of the Landshark. It processes velocity commands and publishes odometry data.
+  </description>
+  <author>Thomas de Candia</author>
+  <maintainer email="aravind@ai.sri.com">Aravind Sundaresan</maintainer>
+
+  <license>Private</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend> 
+  <build_depend>geometry_msgs</build_depend> 
+  <build_depend>landshark_msgs</build_depend> 
+  <run_depend>roscpp</run_depend> 
+  <run_depend>geometry_msgs</run_depend> 
+  <run_depend>landshark_msgs</run_depend> 
+</package>

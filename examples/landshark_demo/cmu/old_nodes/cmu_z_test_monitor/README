@@ -1,0 +1,24 @@
+A multi-window z-test-based execution monitor. 
+
+Compilation:
+cd [PATH_TO_ROS_GROOVY_BASE]/cmu/
+catkin_make
+
+Running the monitor:
+cd [PATH_TO_ROS_GROOVY_BASE]/cmu/
+source devel/setup.sh
+roslaunch landshark_cmu_monitor execution_monitor.launch
+
+Usage:
+The monitor is meant to detect discrepancies between the Landshark
+displacement calculated from its GPS sensor, and from its wheel encoder-based
+odometry. To be detectable, the discrepancies must be on average at least
+as big as parameter acceptable_deviation.
+
+Parameters:
+Parameters can be set in launch/execution_monitor.launch. They are:
+- max_anomaly: How much confidence (between 0 and 1) the algorithm must have
+  before declaring an anomaly.
+- obs_variance: The expected variance of observation values.
+- acceptable_deviation: maximum normal long-term discrepancy between
+  GPS-based displacement and odometry-based displacement.

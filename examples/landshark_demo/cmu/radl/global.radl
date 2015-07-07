@@ -1,0 +1,11 @@
+# Node time periods
+joystick_period : duration 20msec
+gps_period : duration 100msec
+imu_period : duration 10msec
+trigger_period : duration 100msec
+joint_period : duration 50msec
+hokuyo_period : duration 100msec
+fsm_period: duration 50msec
+pp_period: duration 50msec
+ccc_period: duration 50msec
+

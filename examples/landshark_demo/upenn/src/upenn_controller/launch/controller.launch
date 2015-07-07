@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  
+  <!-- controller for LS Cruise control
+       -->
+  <node pkg="upenn_controller" type="upenn_controller" name="upenn_controller" output="screen" >  
+    <param name="base_translation_scale" value="1.0"/>
+    <param name="base_rotation_scale" value="50.0" />
+    <param name="joint_rotation_scale" value="15" />
+    <param name="process_rate" value="25.0" />    
+  </node>
+ 
+</launch>

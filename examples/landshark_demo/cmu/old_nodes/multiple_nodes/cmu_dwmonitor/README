@@ -1,0 +1,54 @@
+//========================================================================
+//  This software is free: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License Version 3,
+//  as published by the Free Software Foundation.
+//
+//  This software is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  Version 3 in the file COPYING that came with this distribution.
+//  If not, see <http://www.gnu.org/licenses/>.
+//========================================================================
+/*!
+ * \file    dwmonitor
+ * \brief   ensures robot safety
+ * \author  Fatma Faruq 
+ * \other   HACMS CMU Advisor Manuela Veloso
+ */
+//========================================================================
+
+
+Launch using the launch file joystickRemap.launch 
+
+Launch File Parameters:
+
+gps_file_pathname:
+Specify a gpsFile from which it reads gps coordinates. 
+The gps coordinates should be in the meters as converted by the gpsProjection library provided.
+
+Format of the gps file: 
+0 1234.000 24534.000 0 
+1 4343.000 3423.000 0
+0 3423.000 32532.000 0
+2 
+
+0 denotes obstacle. 1 denotes target. 2 signals the end of the file (these are tags)
+
+each value is seperated by a space. the format is:
+
+tag gpsX gpsY 0
+
+velocity_sub_topic:
+topic where the control commands are published (the base velocity control commands) 
+
+velocity_pub_topic:
+topic to publish the commands to (this should be the one to make the landshark move) 
+
+use_dw_monitor:
+
+status_msgs_topic:
+topic name to publish to that says true/false if the monitor is running or not
+

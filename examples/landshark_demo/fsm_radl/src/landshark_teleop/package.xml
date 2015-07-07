@@ -1,0 +1,16 @@
+<package>
+  <name>landshark_teleop</name>
+  <version>1.1.0</version>
+  <description>Teleoperate node for the LandShark using an XBox joytsick.</description>
+  <author email="aravind@ai.sri.com">Aravind Sundaresan</author>
+  <maintainer email="aravind@ai.sri.com">Aravind Sundaresan</maintainer>
+  <license>Private</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+</package>

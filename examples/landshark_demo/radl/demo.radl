@@ -1,0 +1,28 @@
+########## Monitor Node ##########
+
+safezone_period : duration 20msec
+health_period: duration 1sec
+
+safezone : node {
+  PUBLISHES
+    safezone_state { TOPIC mtopics.t__safezone_state }
+  SUBSCRIBES
+    navsatfix { TOPIC topics.t__gps_navsatfix MAXLATENCY 100msec }
+  PERIOD safezone_period
+  PATH "src/safe_zone"
+  CXX { PATH "src" HEADER "SafeZone.h" CLASS "SafeZone" FILENAME "SafeZone.cpp" }
+}
+
+
+healthmonitor : node {
+  PUBLISHES
+    healthmonitor_state { TOPIC mtopics.t__healthmonitor_state }
+  SUBSCRIBES
+    ocu_teleop_report { TOPIC mtopics.t__ocu_teleop_health MAXLATENCY 100msec }
+    gateway_teleop_report { TOPIC mtopics.t__gateway_teleop_health MAXLATENCY 100msec }
+    landshark_fsm_report { TOPIC mtopics.t__landshark_fsm_health MAXLATENCY 100msec }
+    landshark_base_report { TOPIC mtopics.t__landshark_base_health MAXLATENCY 100msec }
+  PERIOD health_period
+  PATH "src/health_monitor"
+  CXX { PATH "src" HEADER "HealthMonitor.h" CLASS "HealthMonitor" FILENAME "HealthMonitor.cpp" }
+}

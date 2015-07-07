@@ -1,0 +1,23 @@
+# Create cfg file with hostname and IP addr. 
+# The scripts uses this file to create config files for each host.
+# This file should contain the machine names and the IP addresses. 
+# For e.g see config/aravind.cfg
+
+# Go to a build dir to make things cleaner
+mkdir build
+cd build
+
+# Create private/public keys for all hosts
+# This should be done once and shared across the machines
+../scripts/make_keys.py ../plant.cfg
+
+# Create racoon and setkey config files 
+../scripts/config_ipsec.py ../plant.cfg
+
+# Set appropriate permissions for the certificates
+chmod go-rwx */etc/racoon/certs/*
+
+# You will need to copy the files to each machine in the plant
+
+# The other necessary things are setkey and racoon services (installing racoon install thoses services and set them to run at level S).
+

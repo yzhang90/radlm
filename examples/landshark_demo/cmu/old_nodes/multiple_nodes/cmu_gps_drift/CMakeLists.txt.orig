@@ -1,0 +1,29 @@
+#      Author: Fatma Faruq, Jason Larkin
+#      HACMS CMU Team, Advisor Manuela Veloso, SpiralGen, Inc. 
+
+cmake_minimum_required(VERSION 2.8.3)
+project(cmu_gps_drift)
+
+find_package( catkin REQUIRED COMPONENTS message_generation roscpp
+ landshark_gps geometry_msgs nav_msgs sensor_msgs std_msgs )
+
+include_directories( ${catkin_INCLUDE_DIRS} )
+
+add_service_files( FILES drift.srv )
+
+generate_messages( DEPENDENCIES geometry_msgs nav_msgs std_msgs )
+
+catkin_package( CATKIN_DEPENDS message_runtime roscpp
+ geometry_msgs nav_msgs sensor_msgs std_msgs landshark_gps )
+ 
+add_dependencies( ${PROJECT_NAME}_generate_messages 
+${PROJECT_NAME}_gencpp ${PROJECT_NAME}_genpy )
+
+add_executable(gps_drift_server_start src/gps_drift_server_start.cpp)
+add_library( gps_drift_server src/gps_drift_server.cpp )
+target_link_libraries( gps_drift_server_start gps_drift_server )
+
+install(TARGETS gps_drift_server_start
+ RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+

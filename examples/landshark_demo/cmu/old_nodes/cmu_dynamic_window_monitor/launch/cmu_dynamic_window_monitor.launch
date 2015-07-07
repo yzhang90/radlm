@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+<!--cmu_monitors-->  
+ <!--cmu_dynamic_window_monitor-->  
+ <param name="origin_lat" value="37.4571014863"/>
+ <param name="origin_lon" value="-122.173496991"/>
+ <param name="obstacle_meters_x_reset" value="100000000.0"/>
+ <param name="obstacle_meters_y_reset" value="100000000.0"/>
+ <param name="dt" value = "0.05" /> 
+ <param name="outer_radius" value="10.0"/>
+ <param name="inner_radius" value="2.5"/>
+ <param name="accel_lin_max" value = "4.0" /> 
+ <param name="accel_ang_max" value = "4.0" />
+ <param name="vel_ang_max" value = "1.0" />
+ <param name="vel_lin_max" value = "1.0" />
+ <param name="max_obs_vel" value = "1.0" />
+ <param name="max_obs_dist" value = "10.0" /> 
+ <param name="epsilon" value = "0.25" />
+ <param name="/landshark/cmu_dynamic_window_monitor/control" value="/landshark/cmu_dynamic_window_monitor/control"/>
+ <param name="/landshark/cmu_dynamic_window_monitor/status" value="/landshark/cmu_dynamic_window_monitor/status"/>
+ <param name="/landshark/cmu_dynamic_window_monitor/obstacle" value="/landshark/cmu_dynamic_window_monitor/obstacle"/>
+ 
+ <param name="/landshark/cmu_z_test_monitor/AnomalyMonitor" value="/landshark/cmu_z_test_monitor/AnomalyMonitor"/>
+ 
+ <param name="/landshark/gps" value="/landshark/gps"/>
+ <param name="/landshark/gps_meters" value="/landshark/gps_meters"/>
+ <param name="/landshark_control/base_velocity" value="/landshark_control/base_velocity"/>
+ <param name="/landshark/odom" value="/landshark/odom"/>
+ <param name="/landshark_control/trigger_alarm" value="/landshark_control/trigger_alarm"/>
+ <param name="/landshark_control/reset_alarm" value="/landshark_control/reset_alarm"/>
+
+<!-- <node pkg="landshark_gps_meters" type="landshark_gps_meters_node" name="landshark_gps_meters_node" output="screen" />-->
+
+ <node pkg="cmu_dynamic_window_monitor" type="cmu_dynamic_window_monitor_node" name="cmu_dynamic_window_monitor_node" output="screen" />
+<!--cmu_monitors-->
+ <include file="$(find cmu_z_test_monitor)/launch/cmu_z_test_monitor.launch"/>
+
+</launch> 

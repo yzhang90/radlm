@@ -1,0 +1,1 @@
+KERNEL=="ttyACM[0-9]*", ACTION=="add", ATTRS{idVendor}=="199b", MODE="0666", GROUP="dialout", PROGRAM="/opt/hacms/bin/get_imu_id %N", SYMLINK+="imu/%c"

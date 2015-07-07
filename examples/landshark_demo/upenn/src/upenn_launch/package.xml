@@ -1,0 +1,17 @@
+<package>
+  <name>upenn_launch</name>
+  <version>0.0.0</version>
+  <description>
+    upenn_launch 
+  </description>
+  <maintainer email="nicbezzo@seas.upenn.edu">Nicola Bezzo</maintainer>
+  <license>BSD</license>
+ 
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>landshark_robot</build_depend>
+
+  <run_depend>landshark_robot</run_depend>
+</package>
+
+

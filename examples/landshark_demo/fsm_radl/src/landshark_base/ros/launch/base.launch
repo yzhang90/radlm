@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="landshark_base" type="landshark_base_node" name="landshark_base" output="screen" launch-prefix="" >  
+    <param name="base_topic" value="/base/joy" />
+    <param name="deadman_topic" value="/deadman" />
+    <param name="estop_topic" value="/estop" />
+    <param name="status_topic" value="/base_status" />
+    <param name="wheel_encoder_topic" value="/wheel_encoder"/>
+    <param name="battery_topic" value="/battery" />
+    <param name="process_rate" value="50.0" />    
+  </node>
+
+</launch>

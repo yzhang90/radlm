@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name="velocity_sub_topic" value="/landshark_control/base_velocity"/>
+    <param name="velocity_odom_topic" value="/landshark/odom"/>
+    <param name="velocity_pub_topic" value="/landshark/dwmonitor/safeSpeed" />
+    <param name="velocity_min_pub_topic" value="/landshark/dwmonitor/minSpeed" />
+    <param name ="safetyClearance1" value="1.5" />
+    <param name ="safetyClearance2" value="2.5" />
+    <param name = "robot_max_acc_lin" value = "4" /> 
+    <param name = "robot_max_acc_ang" value = "4" />
+    <param name = "max_robot_vel_ang" value = "1" />
+    <param name = "max_robot_vel_lin" value = "1" />
+    <param name = "hrl" value = "off" /> 
+    <param name = "max_obs_vel" value = "1" />
+    <param name = "epsilon" value = "0.25" />
+    <param name = "max_obs_dist" value = "10" />
+    <param name = "status_msgs_topic" value="/landshark/dwmonitor/status" />
+   <node pkg="landshark_cmu_dwmonitor" type="joystickteleopFilter" name="joystickteleopFilter" output="screen" >  
+ 
+  </node>
+ 
+</launch>

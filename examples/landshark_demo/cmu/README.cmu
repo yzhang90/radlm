@@ -1,0 +1,49 @@
+#!/bin/sh
+#--------------------------------------------------------------------
+#git
+#--------------------------------------------------------------------
+export CMU_GIT_DIR=~/Desktop/ros_groovy_base_cmu
+cd ~/Desktop
+git clone git@git.ai.sri.com:ros_groovy_base --recursive ./ros_groovy_base_cmu
+cd $CMU_GIT_DIR
+git checkout CMU
+git submodule update --init --recursive
+#--------------------------------------------------------------------
+#install ROS nodes
+#--------------------------------------------------------------------
+cd $CMU_GIT_DIR/cmu
+source /opt/ros/indigo/setup.bash
+catkin_make install
+source ./install/setup.bash
+#--------------------------------------------------------------------
+#install RADL nodes
+#--------------------------------------------------------------------
+cd $CMU_GIT_DIR/cmu/radl
+make cmu_nodes
+#make cmu_nodes_sim
+#--------------------------------------------------------------------
+#run 
+#--------------------------------------------------------------------
+#reads the obstacle.map with read_map, publishes goal. map uses 
+#lat/lon, gets converted to map_meters in monitor_gateway/gateway_gps
+$CMU_GIT_DIR/cmu/radl/catkin_ws/devel/lib/monitor_gateway/read_map
+#sends in->navsatfix, in->goal, in->map to /radl/gps, /radl/goal, /radl/map
+#sends /landshark/gps_meters, /landshark/map_meters to out->navsatfix_meters, out->map_meters 
+gateway_gps
+#sends in->twist + in->navsatfix + /landshark/gps_meters to /radl/odom
+gateway_odom
+#sends in->pp_cmu_* to out-pp_*
+pp_cmu
+#sends in->pp_cmu_request to /radl/pp_request,  
+#sends /landshark_2dnav/pp_status to out->pp_cmu_status
+#sends /landshark_2dnav/base_velocity to out->pp_cmu_base
+pp_gateway
+#listens in->twist, in->navsatfix_meters, in->map_meters
+#pub out->estop
+monitor_dw
+#runs the global and local pp
+#listens /radl/*
+#pubs /landshark_2dnav/*
+source $CMU_GIT_DIR/cmu/install/setup.bash
+roslaunch landshark_2dnav landshark_2dnav.launch
+

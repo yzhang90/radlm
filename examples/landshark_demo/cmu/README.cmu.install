@@ -1,0 +1,85 @@
+#!/bin/sh
+
+#--------------------------------------------------------------------
+#install ROS + packages
+#--------------------------------------------------------------------
+
+#Installing Git
+#sudo apt-get install git #not necessary in ubuntu 14.04 and/or CMU-VM
+
+#Sri Wiki
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
+wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install ros-indigo-desktop-full #this comes first in sri wiki
+sudo apt-get install python3.4 #python3.4 is already the newest version.
+sudo apt-get install libpopt-dev
+sudo apt-get install libbullet-dev
+sudo apt-get install ros-indigo-libg2o libsuitesparse-dev
+sudo apt-get install libcrypto++9 #libcrypto* #need to check if all necessary
+sudo apt-get install python-rosdep python-wstool build-essential
+sudo rosdep init
+sudo sh -c 'echo "yaml http://www.ai.sri.com/~aravind/ros/30-hacms.yaml" > /etc/ros/rosdep/sources.list.d/30-hacms.list'
+rosdep update
+
+# USB4 driver
+wget http://www.usdigital.com/assets/general/libusdusb4-1.3.tar.gz
+
+# GPS tools
+sudo apt-get install -y libproj-dev 
+
+# Navigation
+sudo apt-get install -y ros-indigo-move-base ros-indigo-amcl ros-indigo-robot-pose-ekf ros-indigo-fake-localization ros-indigo-robot-localization ros-indigo-map-server ros-indigo-sbpl 
+
+
+#--------------------------------------------------------------------
+#git
+#--------------------------------------------------------------------
+
+export CMU_GIT_DIR=~/Desktop/ros_groovy_base_cmu
+cd ~/Desktop
+git clone git@git.ai.sri.com:ros_groovy_base --recursive ./ros_groovy_base_cmu
+cd $CMU_GIT_DIR
+git checkout CMU
+git submodule update --init --recursive
+
+#--------------------------------------------------------------------
+#install CMU ROS nodes
+#--------------------------------------------------------------------
+
+cd $CMU_GIT_DIR/cmu
+source /opt/ros/indigo/setup.bash
+catkin_make install
+source ./install/setup.bash
+
+#--------------------------------------------------------------------
+#install CMU RADL nodes
+#--------------------------------------------------------------------
+
+cd $CMU_GIT_DIR/cmu/radl
+make cmu_nodes
+#make cmu_nodes_sim
+
+#--------------------------------------------------------------------
+#run in this order
+#--------------------------------------------------------------------
+
+#reads the obstacle.map with read_map, publishes goal. map uses 
+#lat/lon, gets converted to map_meters in monitor_gateway/gateway_gps
+$CMU_GIT_DIR/cmu/radl/catkin_ws/devel/lib/monitor_gateway/read_map
+
+#pubs /radl/gps and /radl/map to landshark_gps_meters, subs to 
+#/landshark/gps_meters and /landshark/map_meters
+$CMU_GIT_DIR/cmu/radl/catkin_ws/devel/lib/monitor_gateway/gateway_gps
+
+#converts gps lat/lon to meters
+source $CMU_GIT_DIR/cmu/install/setup.bash
+roslaunch landshark_gps_meters landshark_gps_meters.launch
+
+#subs to map_meters, treats all as obstacles.
+$CMU_GIT_DIR/cmu/radl/catkin_ws/devel/lib/monitor/monitor_dw
+
+
+
+
+

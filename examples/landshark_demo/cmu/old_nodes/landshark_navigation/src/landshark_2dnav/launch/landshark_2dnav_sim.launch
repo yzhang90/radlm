@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+  <master auto="start"/>
+
+  <!-- Turn The Deadman On So The Robot Can Move -->
+  <node name="deadman_on" pkg="landshark_2dnav" type="deadman_turn_on.py"/> 
+
+  <!-- Convert cmd_vel to base_velocity -->
+<!--  <node name="cmdvel_to_basevelocity" pkg="landshark_2dnav" type="cmdvel_to_basevelocity.py"/> -->
+
+  <!-- pub odom stub -->
+<!--  <node name="pub_odom_dummy" pkg="landshark_2dnav" type="pub_odom_dummy.py"/> -->
+
+  <!-- Convert /landshark/gps to /landshark/gps_odom UTM -->
+  <include file="$(find landshark_gps_meters)/launch/landshark_gps_meters_sim.launch" /> 
+
+  <!-- Run the map server -->
+  <!--  <node name="map_server" pkg="map_server" type="map_server" args="$(find landshark_2dnav)/map/willow.pgm 0.025"/> -->
+
+  <include file="$(find landshark_2dnav)/launch/map_server.launch" /> 
+    
+  <include file="$(find landshark_2dnav)/launch/ekf_template.launch" /> 
+
+  <include file="$(find landshark_2dnav)/launch/amcl_diff.launch" />
+  
+  <include file="$(find landshark_2dnav)/launch/fake_localization.launch" />
+
+  <include file="$(find landshark_2dnav)/launch/move_base_only.launch" />
+
+  <!-- advertize waypoint service -->
+<!--  <include file="$(find landshark_2dnav)/launch/navigate.launch" />-->
+  <node name="navigate" pkg="landshark_2dnav" type="navigate.py"/>
+
+<!--  <node name="vanilla_way_point_navigation" pkg="landshark_2dnav" type="vanilla_way_point_navigation.py"/>-->
+
+  <include file="$(find landshark_description)/launch/landshark_description.launch"/>
+
+
+
+</launch>

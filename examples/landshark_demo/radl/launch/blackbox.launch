@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- communication nodes
+       -->
+  <node pkg="comm" type="gateway_gui" name="gateway_gui" output="screen" />
+  <node pkg="comm" type="gateway_teleop" name="gateway_teleop" output="screen" />
+
+  <!-- base nodes 
+       -->
+  <node pkg="landshark" type="landshark_base" name="landshark_base" output="screen"/>
+  <node pkg="landshark" type="landshark_fsm" name="landshark_fsm" output="screen"/>
+  <node pkg="landshark" type="landshark_ccc" name="landshark_ccc" output="screen"/>
+  <node pkg="landshark" type="landshark_pp" name="landshark_pp" output="screen"/>
+
+  <!-- other actuator nodes 
+       -->
+  <node pkg="landshark" type="landshark_paintball" name="landshark_paintball" output="screen"/>
+  <node pkg="landshark" type="landshark_turret" name="landshark_turret" output="screen"/>
+  <node pkg="landshark" type="landshark_moog" name="landshark_moog" output="screen"/>
+
+  <!-- sensor nodes 
+       -->
+  <node pkg="landshark" type="landshark_gps" name="landshark_gps" output="screen"/>
+  <node pkg="landshark" type="landshark_hokuyo_front" name="landshark_hokuyo_front" output="screen"/>
+  <node pkg="landshark" type="landshark_hokuyo_rear" name="landshark_hokuyo_rear" output="screen"/>
+  <node pkg="landshark" type="landshark_imu_front" name="landshark_imu_front" output="screen"/>
+  <node pkg="landshark" type="landshark_imu_rear" name="landshark_imu_rear" output="screen"/>
+</launch>

@@ -1,0 +1,2 @@
+KERNEL=="js*", ACTION=="add", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="028e", MODE="0666", GROUP="dialout", SYMLINK+="xbox_wired/js0"
+KERNEL=="js*", ACTION=="add", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="0719", MODE="0666", GROUP="dialout", SYMLINK+="xbox_wireless/js0"

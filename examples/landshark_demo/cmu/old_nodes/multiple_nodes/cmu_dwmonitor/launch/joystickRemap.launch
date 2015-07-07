@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+       <param name="velocity_sub_topic" value="/landshark_control/base_velocity_temp"/>
+    <param name="velocity_pub_topic" value="/landshark_control/base_velocity" />
+    <param name="use_dw_monitor" value="true" /> 
+    <param name ="lower_angle_range" value="1.5" />
+    <param name ="gps_file_pathname" value="/home/fatma/ros_groovy_base/CMU/src/landshark_cmu_dwmonitor/src/gpsFile.txt" />
+         <param name = "status_msgs_topic" value="/landshark/dwMonitorStatus" />
+   <node pkg="landshark_cmu_dwmonitor" type="joystickteleopFilter" name="joystickteleopFilter" output="screen" >  
+ 
+  </node>
+ 
+</launch>

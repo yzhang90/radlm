@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<launch>
+
+<!--rosbridge_server--> 
+ <arg name="port" default="9090" />
+ <arg name="ssl" default="false" />
+ <arg name="certfile" />
+ <arg name="keyfile" />
+ <arg name="authenticate" default="false" />
+ 
+ <param name="/rosbridge/port" value="$(arg port)"/>
+
+ <group if="$(arg ssl)">
+   <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+     <param name="certfile" value="$(arg certfile)" />
+     <param name="keyfile" value="$(arg keyfile)" />
+     <param name="authenticate" value="$(arg authenticate)" />
+   </node>
+ </group>
+ <group unless="$(arg ssl)">
+   <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+     <param name="authenticate" value="$(arg authenticate)" />
+   </node>
+ </group>
+ 
+ <node name="rosapi" pkg="rosapi" type="rosapi" />
+<!--rosbridge_server--> 
+
+<!--gps_drift-->  
+ <param name="gps_altitude" value="0.0" />
+ <!-- <param name="origin_lat" value="0.0" /> -->
+ <!-- <param name="origin_lat" value="40.443" /> --> 
+ <param name="origin_lat" value="37.4571018419" />
+ <!-- <param name="origin_lon" value="0.0" /> -->
+ <!-- <param name="origin_lon" value="-79.945" /> -->
+ <param name="origin_lon" value="-122.173497006" />
+ <node pkg="cmu_gps_drift" type="cmu_gps_drift_server" name="cmu_gps_drift_server">
+ </node>
+<!--gps_drift-->  
+
+<!--pub_orientation-->  
+ <node pkg="cmu_track_pos" type="pub_orientation.py" name="pub_orientation"/>
+<!--pub_orientation-->   
+  
+<!--dwmonitor-->  
+ <param name="/landshark_control/base_velocity" value="/landshark_control/base_velocity"/>
+ <param name="/landshark/odom" value="/landshark/odom"/>
+ <param name="/landshark/gps" value="/landshark/gps"/>
+ <param name="/cmu_dwmonitor/safeSpeed" value="/cmu_dwmonitor/safeSpeed" />
+ <param name="/cmu_dwmonitor/minSpeed" value="/cmu_dwmonitor/minSpeed" />
+ <param name="/cmu_dwmonitor/status" value="/cmu_dwmonitor/status" />
+ <param name="/cmu_dwmonitor/dwswitch" value="/cmu_dwmonitor/dwswitch" />
+ <param name="/cmu_dwmonitor/obstacle" value="/cmu_dwmonitor/obstacle" />
+ <param name="/cmu_dwmonitor/safetyClearance1" value="1.5" />
+ <param name="/cmu_dwmonitor/safetyClearance2" value="2.5" />
+ <param name="/cmu_dwmonitor/accel_lin_max" value = "4" /> 
+ <param name="/cmu_dwmonitor/accel_ang_max" value = "4" />
+ <param name="/cmu_dwmonitor/vel_ang_max" value = "1" />
+ <param name="/cmu_dwmonitor/vel_lin_max" value = "1" />
+ <param name="/cmu_dwmonitor/max_obs_vel" value = "1" />
+ <param name="/cmu_dwmonitor/position_mode" value = "gps" />
+ <param name="/cmu_dwmonitor/epsilon" value = "0.25" />
+ <param name="/cmu_dwmonitor/dt" value = "0.05" />
+ <param name="/cmu_dwmonitor/max_obs_dist" value = "10" /> 
+ <node pkg="cmu_dwmonitor" type="cmu_dwmonitor" name="cmu_dwmonitor" output="screen" />
+<!--dwmonitor-->
+
+<!--execution_monitor--> 
+<!-- --> 
+ <param name="/cmu_sensor_monitor/max_anomaly" value = "0.95"/>
+ <param name="/cmu_sensor_monitor/obs_variance" value="0.3"/>
+ <param name="/cmu_sensor_monitor/acceptable_deviation" value="0.1"/>
+ <param name="/cmu_sensor_monitor/play_alarm_sound" value="false"/>
+ <node pkg="cmu_sensor_monitor" type="cmu_sensor_monitor" name="cmu_sensor_monitor" output="screen"/>
+ <node pkg="cmu_sensor_monitor" type="cmu_monitor_proxy" name="cmu_monitor_proxy" />
+<!-- -->
+<!--execution_monitor-->
+
+<!--cmu_velocity--> 
+<!-- --> 
+ <param name="/landshark_control/deadman" value="/landshark_control/deadman" /> 
+ <param name="/landshark_control_cmux/base_velocity" value="/landshark_control_cmux/base_velocity" />
+ <node pkg="cmu_monitor_monitor" type="cmu_monitor_monitor" name="cmu_monitor_monitor" output="screen"/>
+<!-- -->
+<!--cmu_velocity-->
+
+<!--cmu_keyboard_teleop--> 
+<!-- --> 
+<!-- <node pkg="cmu_keyboard_teleop" type="cmu_keyboard_teleop" name="cmu_keyboard_teleop" output="screen"/> -->
+<!-- -->
+<!--cmu_keyboard_teleop-->
+
+
+<arg name="foo" default="true" />
+<group if="$(arg foo)">
+  <!-- stuff that will only be evaluated if foo is true -->
+</group>
+<param name="foo" value="bar" unless="$(arg foo)" />
+
+
+</launch> 

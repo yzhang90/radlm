@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+  <master auto="start"/>
+
+  <!-- Turn The Deadman On So The Robot Can Move -->
+  <node name="deadman_on" pkg="landshark_2dnav" type="deadman_turn_on.py"/>
+
+  <!-- Convert cmd_vel to base_velocity -->
+  <node name="cmdvel_to_basevelocity" pkg="landshark_2dnav" type="cmdvel_to_basevelocity.py"/>
+
+  <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find landshark_2dnav)/map/willow.pgm 0.025"/>
+  
+  
+  <include file="$(find landshark_2dnav)/launch/ekf_template.launch" /> 
+
+  <!--- Run AMCL -->
+  <!--- <include file="$(find landshark_2dnav)/launch/amcl_diff.launch" /> -->
+  
+  <!--- Run fake_localization -->
+  <!--- <node name="fake_localization" pkg="fake_localization" type="fake_localization"/> -->
+  <include file="$(find landshark_2dnav)/launch/fake_localization.launch" />
+
+  <!--- <param name="navfn/allow_unknown" value="false"/>-->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="SBPLLatticePlanner/primitive_filename" value="$(find sbpl_lattice_planner)/mprim/pr2.mprim" />
+    <rosparam file="$(find landshark_2dnav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find landshark_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find landshark_2dnav)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find landshark_2dnav)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find landshark_2dnav)/param/pose_follower_params.yaml" command="load" />  
+    <rosparam file="$(find landshark_2dnav)/param/sbpl_global_params.yaml" command="load" /> 
+    <rosparam file="$(find landshark_2dnav)/param/move_base_straight_params.yaml" command="load" /> 
+
+    <remap from="odom" to="landshark/odom"/>
+    
+ 
+    
+    
+  </node>
+</launch>

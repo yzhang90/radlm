@@ -1,0 +1,36 @@
+<launch>
+  <!-- 
+    Base
+  -->
+  <include file="$(find landshark_base)/launch/base.launch"/>
+
+  <!-- 
+    Joystick
+  -->
+  <include file="$(find landshark_teleop)/launch/joystick.launch"/>
+
+<!-- 
+    Deadman
+  -->
+  <include file="$(find landshark_teleop)/launch/deadman.launch"/>
+
+
+  <!--
+    Imu
+  -->
+  <include file="$(find landshark_imu)/launch/imu.launch"/>
+
+  <!--
+    Video
+  -->
+<!--  <include file="$(find landshark_video)/launch/video.launch"/> -->
+
+  <!--
+    Radar
+  -->
+  <include file="$(find landshark_radar)/launch/radar.launch"/>
+
+  <include file="$(find landshark_gps)/launch/gps.launch"/>
+  <include file="$(find landshark_moog_ptz)/launch/moog_ptz.launch"/>
+  <include file="$(find landshark_turret)/launch/turret.launch"/>
+</launch>

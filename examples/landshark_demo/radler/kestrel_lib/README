@@ -1,0 +1,3 @@
+For Certikos and Lynxsecure intra-VM communications, this library require the system to be installed with the according kestrel module.
+
+To build the Kestrel kernel module, see the kmods subdirectory.

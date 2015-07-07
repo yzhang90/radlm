@@ -1,0 +1,3 @@
+#!/bin/sh
+iptables-restore < /opt/hacms/etc/iptables.rules
+exit 0

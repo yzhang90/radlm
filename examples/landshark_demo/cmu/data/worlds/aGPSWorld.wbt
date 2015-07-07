@@ -1,0 +1,86 @@
+#VRML_SIM V6.0 utf8
+WorldInfo {
+  info [
+    "Description"
+    "Author: Yvan Bourquin - www.cyberbotics.com"
+    "Date: 12 Dec 2012"
+  ]
+  title "Black-i Robotics LandShark"
+  ERP 0.5
+}
+Viewpoint {
+  fieldOfView 0.9
+  orientation 0.0321716 0.999193 0.024031 4.99922
+  position -10.5476 3.44501 28.0939
+  follow "robot"
+}
+Background {
+  skyColor [
+    0.7 0.7 1
+  ]
+}
+DirectionalLight {
+  ambientIntensity 0.8
+  direction -0.2 -1 0.6
+  castShadows TRUE
+}
+Landshark {
+  translation 3.25229 0.132802 27.6027
+  rotation -0.00205647 0.999996 -0.00204906 1.57437
+}
+Axis {
+}
+DEF GROUND Solid {
+  children [
+    DEF GROUND Shape {
+      appearance Appearance {
+        material Material {
+          ambientIntensity 0.3
+        }
+        texture ImageTexture {
+          url [
+            "textures/ground.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 1000 1000
+        }
+      }
+      geometry Plane {
+        size 60 117
+      }
+    }
+  ]
+  boundingObject USE GROUND
+  locked TRUE
+}
+DEF anObstacle Solid {
+  translation 1.13898 0.3 21.7992
+  children [
+    Shape {
+      geometry Box {
+        size 0.3 0.3 0.3
+      }
+    }
+  ]
+}
+DEF anObstacle Solid {
+  translation 1.35747 0.3 29.6662
+  children [
+    Shape {
+      geometry Box {
+        size 0.3 0.3 0.3
+      }
+    }
+  ]
+}
+DEF anObstacle Solid {
+  translation 14.4318 0.3 20.707
+  children [
+    Shape {
+      geometry Box {
+        size 0.3 0.3 0.3
+      }
+    }
+  ]
+}

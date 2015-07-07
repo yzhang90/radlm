@@ -1,0 +1,6 @@
+hokuyo_front: string "/dev/hokuyo/H1321024"
+hokuyo_rear: string "/dev/hokuyo/H1321015"
+
+imu_front: string "/dev/imu/6223.39098"
+imu_rear: string "/dev/imu/6223.11348"
+

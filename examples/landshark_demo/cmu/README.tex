@@ -1,0 +1,61 @@
+%pdflatex README.tex
+\documentclass{article}
+\usepackage{hyperref}
+\title{HACMS CMU Path Planner, Navigaiton, and Monitors}
+\author{Jason Larkin}
+\date{03/09/2015}
+\begin{document}
+\maketitle
+
+\section{Introduciton}
+
+The Path Planner, Navigation, and Monitors are discussed in the context of video 
+
+\href{https://www.dropbox.com/s/jlr5wiiuo6to4hc/landshark_2dnav_demo.ogv?dl=0}{landshark 2dnav demo.ogv}
+
+\section{Path Planner and Navigation}
+\begin{itemize}
+\item 0:02:
+The map input format is latitude, longitude, and obstacle "size" (in meters). 
+The obstacles are defined in a simple text file (e.g., obstacles.map in video). ARAVIND: what should I say about how the file is specified and loaded by OCU? :ARAVIND The 
+goal is also defined in lat/lon format and is specified by the OCU. ARAVIND: How is goal defined by OCU? :ARAVIND
+\item 0:04:
+While the map's input format is in lat/lon, the robot position, obstacle positions, 
+etc. are represented on a map using a local UTM meters frame.  By default, the 
+position of the robot when the navigation system is launched is considered 
+the origin (0,0). The origin can be set to the robot's current position after initial launch if desired. ARAVIND: do you want to add an origin reset to OCU GUI? :ARAVIND
+
+The obstacle "size" 
+is a square region (red transparent squares) defined around the point obstacles 
+(solid red circles). The obstacle "size" 
+can be set to a value so that the robot's local path planning controller 
+can avoid the dynamic window region (transparent red circles) defined by 
+the dynamic window monitor (see Section \ref{Section_Monitors}). 
+\item 0:14-0:16:
+The Path Planner and Navigation system are requested.  This is done with the joystick on the physical Landshark. ARAVIND: which button(s)? :ARAVIND
+\item 0:17:
+The navigation plan is made and the navigation begins (Status: engaged). 
+\item 0:30:
+The current navigation plan is cancelled (Status: off).
+\item 0:35:
+A new navigation plan is requested and navigation continues. 
+\end{itemize}
+
+\section{Monitors}\label{Section_Monitors}
+This section of the video demonstrates the dynamic window monitor 
+behavior.
+\begin{itemize}
+\item 0:44:
+Navigation is cancelled. 
+\item 0:48:
+Naviation switches to joystick control and the robot is driven deliberatly 
+at the obstacle and its dynamic window. Note: the window is not represented 
+dynamically in the video. 
+\item 0:53:
+Dynamic window monitor calls ESTOP when robot enters the obstacle's dynamic window 
+region. On the physical Landshark the ESTOP will result in robot braking to a stop.  
+Joystick control can be... ARAVIND: How is ESTOP cancelled and joystick control 
+restored? :ARAVIND
+\end{itemize}
+\end{document}
+

@@ -1,0 +1,42 @@
+plant : plant {
+  MACHINES
+    ocu_box : machine {
+      OS {
+        NODES_UID 1000
+        IP 1.1.1.1
+        IMG "ubuntu-12.04.img"
+        NODES 
+          ocu.ocu_gui_node
+          ocu.landshark_teleop
+      }
+    }
+    black_box : machine {
+      OS h1 : lynxsecure {
+        VMS commVM { 
+          OS {
+	    IP 1.1.1.1
+            NODES_UID 1000
+            IMG "ubuntu-14.04.img"
+            NODES 
+              comm.landshark_teleop 
+          }
+        }
+        VMS sriVM { 
+          OS {
+            NODES_UID 1000
+            IMG "ubuntu-14.04.img"
+            NODES 
+              landshark.landshark_base 
+              landshark.landshark_gps 
+              landshark.landshark_imu_front 
+              landshark.landshark_imu_rear 
+              landshark.landshark_paintball 
+              landshark.landshark_turret 
+              landshark.landshark_moog 
+              landshark.landshark_hokuyo_front 
+              landshark.landshark_hokuyo_rear 
+          }
+        }
+      }
+    }
+}

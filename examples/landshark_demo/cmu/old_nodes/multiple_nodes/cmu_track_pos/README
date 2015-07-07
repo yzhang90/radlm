@@ -1,0 +1,26 @@
+
+
+HRL
+overall purpose
+to integrate spiral generated code
+to impliment spiral generated code
+
+does your sensor data rate fluctuate with time? euler vs. multi-step
+follow the ROS Interface for Real-Time Vehicle Simulator?
+should i make a dummy node which publishes data according to the specifications?
+
+
+to run with vanilla_way_point_vavigation.py:
+
+(optional) roslaunch landshark_sim landshark_sim.launch
+
+
+rosrun landshark_cmu_gpsrift gps_drift_server 37.4571017302 -122.173497004
+
+rosrun landshark_cmu_tra_pos pub_vel.py 0.0 0.0 deadman_only
+
+rosrun landshark_cmu_track_pos vanilla_way_point_navigation.py
+
+rosbag record /landshark_control/base_velocity
+
+

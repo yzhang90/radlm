@@ -1,0 +1,41 @@
+package ocu;
+
+message Status {
+  required uint64 seq = 21;
+  optional string fsm_actuator = 22;
+  optional string fsm_status = 23;
+  optional string base_status = 24;
+  optional string actuator_status = 25;
+  optional string rse_status = 26;
+  optional string ccc_status = 30;
+  optional string pp_status = 31;
+  optional string gps = 27;
+  optional double mag_front = 28;
+  optional double mag_rear = 29;
+  optional string monitor_status = 32;
+}
+
+message Command {
+  required uint64 seq = 1;
+  optional string pp_map_file = 2;
+  optional double pp_goal_lat = 3;
+  optional double pp_goal_lon = 4;
+  optional double pp_goal_alt = 5;
+  optional string joy = 6;
+  optional double ccc_speed = 7;
+  optional bool select_joy = 8;
+  optional bool select_ccc = 9;
+  optional bool select_pp = 10;
+  optional Map map = 21;
+}
+
+message Point {
+  required double x = 17;
+  required double y = 18;
+  required double z = 19;
+}
+
+message Map {
+  repeated Point point = 20;
+}
+

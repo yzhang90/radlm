@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find landshark_base)/launch/base.launch"/>
+  <include file="$(find landshark_teleop)/launch/teleop.launch"/>
+</launch>

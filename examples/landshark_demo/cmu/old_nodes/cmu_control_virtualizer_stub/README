@@ -1,0 +1,2 @@
+#http://wiki.ros.org/catkin/Tutorials/CreatingPackage
+catkin_create_pkg cmu_control_virtualizer_stub std_msgs rospy roscpp

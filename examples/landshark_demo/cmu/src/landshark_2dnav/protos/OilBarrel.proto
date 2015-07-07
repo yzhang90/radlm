@@ -1,0 +1,67 @@
+# Resizable oil barrel
+
+PROTO OilBarrel [
+  field SFVec3f translation 0 0.44 0
+  field SFRotation rotation 0 1 0 0
+  field SFFloat height 0.88
+  field SFFloat radius 0.305
+  field SFNode physics NULL
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    children [
+      Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url [
+              "textures/oil_barrel_side.jpg"
+            ]
+          }
+        }
+        geometry Cylinder {
+          bottom FALSE
+          top FALSE
+          height IS height
+          radius IS radius
+        }
+      }
+      Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url [
+              "textures/oil_barrel_top.jpg"
+            ]
+          }
+        }
+        geometry Cylinder {
+          bottom FALSE
+          side FALSE
+          height IS height
+          radius IS radius
+        }
+      }
+      Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url [
+              "textures/oil_barrel_bottom.jpg"
+            ]
+          }
+        }
+        geometry Cylinder {
+          top FALSE
+          side FALSE
+          height IS height
+          radius IS radius
+        }
+      }
+    ]
+    boundingObject Cylinder {
+      height IS height
+      radius IS radius
+    }
+    physics IS physics
+  }
+}

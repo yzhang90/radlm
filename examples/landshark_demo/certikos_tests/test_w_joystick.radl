@@ -1,0 +1,164 @@
+
+
+settings: module_settings {
+  MODULE_BASE_PATH "src"
+}
+
+
+#####
+# Period to play with. I recommand beginning to run it 100 times slower first
+# to check functionnality, then go back to this values and record outputs to files
+# to compare offline.
+# Keeping a ratio of 2 between the gateways and nodes is a good idea.
+
+joystic_1_period 10msec
+gateway_period 5msec
+
+# The latency has to be changed according to your platform.
+# From my experience with certikos, these values are ok.
+
+sri_comm_latency 1msec
+ocu_bb_latency 15msec
+
+
+
+#####
+# Plant description
+
+test_w_joystick : plant { MACHINES
+  black_box { OS
+    hypervisor : certikos { VMS
+      comm { OS sys : linux {
+        IP 192.168.15.121
+        NODES_UID 1000
+        IMG "linux.img" #for now, this image is not used.
+        NODES gw1
+      }}
+      sri { OS sys : linux {
+        NODES_UID 1000
+        IMG "linux.img" #for now, this image is not used.
+        NODES j1 printer11
+      }}
+    }
+  }
+  ocu { OS sys : linux {
+    IP 192.168.15.112
+    NODES_UID 1000
+    IMG "linux.img" #for now, this image is not used.
+    NODES printer12
+  }}
+}
+
+
+#####
+# Joystic number 1
+
+m__vector3 : struct { FIELDS x: float64 0  y: float64 0 z: float64 0 }
+
+j1_teleop_base : topic { FIELDS
+  stamp = radl.start_time
+  linear = m__vector3
+  angular = m__vector3
+}
+j1_teleop_over_ride : topic { FIELDS data : bool false }
+j1_teleop_estop : topic { FIELDS data : uint8 0 }
+j1_teleop_deadman : topic { FIELDS data : bool false }
+j1_teleop_turret_pan : topic { FIELDS data : float64 0 }
+j1_teleop_turret_tilt : topic { FIELDS data : float64 0 }
+j1_teleop_moog_pan : topic { FIELDS data : float64 0 }
+j1_teleop_moog_tilt : topic { FIELDS data : float64 0 }
+j1_teleop_moog_zoom : topic { FIELDS data : float64 0 }
+j1_teleop_paintball_trigger : topic { FIELDS data : uint8 0 }
+
+j1 : node {
+  DEFS
+    XBOX_WIRED: uint8 1
+    XBOX_WIRELESS: uint8 2
+  DEFS
+    device : string "/dev/xbox_wired/js0"
+    jstype = XBOX_WIRED
+    deadzone : float32 0.20
+    heartbeat_timeout : duration 0msec
+  PUBLISHES
+    base { TOPIC j1_teleop_base }
+    estop { TOPIC j1_teleop_estop }
+    over_ride { TOPIC j1_teleop_over_ride }
+    turret_pan { TOPIC j1_teleop_turret_pan }
+    turret_tilt { TOPIC j1_teleop_turret_tilt }
+    moog_pan { TOPIC j1_teleop_moog_pan }
+    moog_tilt { TOPIC j1_teleop_moog_tilt }
+    moog_zoom { TOPIC j1_teleop_moog_zoom }
+    trigger { TOPIC j1_teleop_paintball_trigger }
+  PERIOD joystic_1_period
+  CXX { HEADER "LandsharkJoystick.h" CLASS "LandsharkJoystick" FILENAME "LandsharkJoystick.cpp" LIB boostlib }
+}
+
+
+
+####
+# Gateways to pass the message around
+
+
+gw1_teleop_base = j1_teleop_base
+gw1_teleop_over_ride = j1_teleop_over_ride
+gw1_teleop_estop = j1_teleop_estop
+gw1_teleop_deadman = j1_teleop_deadman
+gw1_teleop_turret_pan = j1_teleop_turret_pan
+gw1_teleop_turret_tilt = j1_teleop_turret_tilt
+gw1_teleop_moog_pan = j1_teleop_moog_pan
+gw1_teleop_moog_tilt = j1_teleop_moog_tilt
+gw1_teleop_moog_zoom = j1_teleop_moog_zoom
+gw1_teleop_paintball_trigger = j1_teleop_paintball_trigger
+
+gw1 : node {
+  SUBSCRIBES
+    i1 { TOPIC j1_teleop_base MAXLATENCY sri_comm_latency }
+    i2 { TOPIC j1_teleop_estop MAXLATENCY sri_comm_latency }
+    i3 { TOPIC j1_teleop_over_ride MAXLATENCY sri_comm_latency }
+    i4 { TOPIC j1_teleop_turret_pan MAXLATENCY sri_comm_latency }
+    i5 { TOPIC j1_teleop_turret_tilt MAXLATENCY sri_comm_latency }
+    i6 { TOPIC j1_teleop_moog_pan MAXLATENCY sri_comm_latency }
+    i7 { TOPIC j1_teleop_moog_tilt MAXLATENCY sri_comm_latency }
+    i8 { TOPIC j1_teleop_moog_zoom MAXLATENCY sri_comm_latency }
+    i9 { TOPIC j1_teleop_paintball_trigger MAXLATENCY sri_comm_latency }
+  PUBLISHES
+    o1 { TOPIC gw1_teleop_base }
+    o2 { TOPIC gw1_teleop_estop }
+    o3 { TOPIC gw1_teleop_over_ride }
+    o4 { TOPIC gw1_teleop_turret_pan }
+    o5 { TOPIC gw1_teleop_turret_tilt }
+    o6 { TOPIC gw1_teleop_moog_pan }
+    o7 { TOPIC gw1_teleop_moog_tilt }
+    o8 { TOPIC gw1_teleop_moog_zoom }
+    o9 { TOPIC gw1_teleop_paintball_trigger }
+  PERIOD gateway_period
+  CXX { HEADER "gateway_9.h" CLASS "identity_9" }
+}
+
+
+####
+# Printer
+
+printer11 : node {
+  SUBSCRIBES
+    base { TOPIC gw1_teleop_base MAXLATENCY sri_comm_latency }
+    trigger { TOPIC gw1_teleop_paintball_trigger MAXLATENCY sri_comm_latency }
+  PERIOD joystic_1_period
+  CXX { HEADER "teleop_print.h" CLASS "StandalonePrint" }
+}
+
+printer12 : node {
+  SUBSCRIBES
+    base { TOPIC gw1_teleop_base MAXLATENCY ocu_bb_latency }
+    trigger { TOPIC gw1_teleop_paintball_trigger MAXLATENCY ocu_bb_latency }
+  PERIOD joystic_1_period
+  CXX { HEADER "teleop_print.h" CLASS "StandalonePrint" }
+}
+
+######
+# Libraries
+
+boostlib : cmake_library {
+  CMAKE_MODULE "Boost"
+  CMAKE_COMPONENTS "thread" "system"
+}

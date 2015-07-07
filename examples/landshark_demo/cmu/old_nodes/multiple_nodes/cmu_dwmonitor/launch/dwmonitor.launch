@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+<!--dwmonitor-->  
+ <param name="/landshark_control/base_velocity" value="/landshark_control/base_velocity"/>
+ <param name="/landshark/odom" value="/landshark/odom"/>
+ <param name="/landshark/gps" value="/landshark/gps"/>
+ <param name="/cmu_dwmonitor/safeSpeed" value="/cmu_dwmonitor/safeSpeed" />
+ <param name="/cmu_dwmonitor/minSpeed" value="/cmu_dwmonitor/minSpeed" />
+ <param name="/cmu_dwmonitor/status" value="/cmu_dwmonitor/status" />
+ <param name="/cmu_dwmonitor/dwswitch" value="/cmu_dwmonitor/dwswitch" />
+ <param name="/cmu_dwmonitor/obstacle" value="/cmu_dwmonitor/obstacle" />
+ <!-- <param name="origin_lat" value="0.0" /> -->
+ <!-- <param name="origin_lat" value="40.443" /> --> 
+ <param name="origin_lat" value="37.4571018419" />
+ <!-- <param name="origin_lon" value="0.0" /> -->
+ <!-- <param name="origin_lon" value="-79.945" /> -->
+ <param name="origin_lon" value="-122.173497006" />
+ <param name="/cmu_dwmonitor/safetyClearance1" value="1.5" />
+ <param name="/cmu_dwmonitor/safetyClearance2" value="2.5" />
+ <param name="/cmu_dwmonitor/accel_lin_max" value = "4" /> 
+ <param name="/cmu_dwmonitor/accel_ang_max" value = "4" />
+ <param name="/cmu_dwmonitor/vel_ang_max" value = "1" />
+ <param name="/cmu_dwmonitor/vel_lin_max" value = "1" />
+ <param name="/cmu_dwmonitor/max_obs_vel" value = "1" />
+ <param name="/cmu_dwmonitor/position_mode" value = "gps" />
+ <param name="/cmu_dwmonitor/epsilon" value = "0.25" />
+ <param name="/cmu_dwmonitor/dt" value = "0.05" />
+ <param name="/cmu_dwmonitor/max_obs_dist" value = "10" /> 
+ <node pkg="cmu_dwmonitor" type="cmu_dwmonitor" name="cmu_dwmonitor" output="screen" />
+<!--dwmonitor-->
+</launch>

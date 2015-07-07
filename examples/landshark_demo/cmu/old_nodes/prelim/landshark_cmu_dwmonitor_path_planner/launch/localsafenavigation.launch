@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name ="gps_file_pathname" value="/home/fatma/ros_groovy_base/CMU/src/landshark_cmu_dwmonitorIntegration/src/gpsFile.txt" />
+    <param name ="wClearance" value="1.5"/>
+    <param name ="eClerance" value="1.7" />
+   <node pkg="landshark_cmu_dwmonitor_path_planner" type="localPathPlanner" name="localPathPlanner" output="screen" >  
+ 
+  </node>
+ 
+</launch>

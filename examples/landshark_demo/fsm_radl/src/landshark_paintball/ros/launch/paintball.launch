@@ -1,0 +1,11 @@
+<launch>
+  <node pkg="landshark_paintball" type="landshark_paintball_node" name="landshark_paintball" output="screen" >   
+    <param name="paintball_command_topic" value="/landshark_control/trigger" />
+    <param name="controller_ip" value="192.168.15.78" />  
+    <param name="process_rate" value="5.0" />  
+    <param name="use_msg_auth" value="$(optenv USE_MSG_AUTH false)" />
+    <param name="msg_auth" value="auth" />
+  </node>
+
+</launch>
+

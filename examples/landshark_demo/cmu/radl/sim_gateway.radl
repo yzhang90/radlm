@@ -1,0 +1,55 @@
+
+landshark_gps : node  {
+  PUBLISHES
+    navsatfix { TOPIC topics.t__gps_navsatfix }
+    twist { TOPIC topics.t__gps_velocity }
+    timeref { TOPIC topics.t__gps_timeref }
+  PERIOD global.gps_period
+  CXX { PATH "src/sim_gateway" HEADER "gateway_gps_sim.h" CLASS "GatewayGpsSim" FILENAME "" }
+}
+
+landshark_imu_front : node {
+  DEFS
+    period = global.imu_period
+  PUBLISHES
+    imu { TOPIC topics.t__imu_front_imu }
+    magnetometer { TOPIC topics.t__imu_front_magnetometer }
+  PERIOD global.imu_period
+  CXX { PATH "src/sim_gateway" HEADER "gateway_imu_sim.h" CLASS "GatewayImuSim" FILENAME "" }
+}
+
+read_map : node  {
+  DEFS
+    array_size = arrays.map_array_size
+  PUBLISHES
+    map { TOPIC topics.t__map }
+    goal { TOPIC topics.t__goal }
+#    pp { TOPIC topics.t__pp }
+  PERIOD 100msec
+  CXX { PATH "src/read_map" HEADER "ReadMap.h" CLASS "ReadMap" FILENAME "ReadMap.cpp" }
+}
+
+gateway_pp_sim : node {
+  PUBLISHES 
+    pp_request { TOPIC topics.t__fsm_pp_request }
+  PUBLISHES
+    pp_cmu_gps_reset { TOPIC cmu.t__pp_gps_reset  }
+  SUBSCRIBES
+    pp_base { TOPIC topics.t__pp_base MAXLATENCY 10msec }
+    pp_status { TOPIC topics.t__pp_status MAXLATENCY 10msec }
+  PERIOD global.pp_period
+  PATH "src/sim_gateway"
+  CXX { PATH "" HEADER "gateway_pp_sim.h" CLASS "GatewayPPSim" FILENAME "" }
+}
+
+gateway_monitor_sim : node {
+  SUBSCRIBES
+    estop { TOPIC topics.t__monitor_estop MAXLATENCY 10msec }
+    monitor_ftest { TOPIC cmu.t__monitor_ftest_status MAXLATENCY 10msec }
+  PERIOD global.pp_period
+  PATH "src/sim_gateway"
+  CXX { PATH "" HEADER "gateway_monitor_sim.h" CLASS "GatewayMonitorSim" FILENAME "" }
+}
+
+
+

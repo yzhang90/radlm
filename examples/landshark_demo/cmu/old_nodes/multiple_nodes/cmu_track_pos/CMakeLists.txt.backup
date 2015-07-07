@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(cmu_track_pos)
+
+find_package(catkin REQUIRED COMPONENTS
+ actionlib_msgs
+ actionlib
+ landshark_msgs
+ landshark_common
+ tf
+ geometry_msgs
+ landshark_gps
+ nav_msgs
+ roscpp
+ std_msgs
+ message_generation
+ sensor_msgs
+)
+
+catkin_package(
+ CATKIN_DEPENDS 
+ message_runtime 
+ geometry_msgs 
+ landshark_msgs
+ tf
+ actionlib
+ landshark_common
+ landshark_gps 
+ nav_msgs 
+ roscpp 
+ std_msgs 
+ sensor_msgs
+)
+
+include_directories(
+ ${catkin_INCLUDE_DIRS}
+)
+
+install( PROGRAMS 
+ src/track_pos.py
+ src/pub_orientation.py
+ nodes/vanilla_way_point_navigation.py
+ DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+

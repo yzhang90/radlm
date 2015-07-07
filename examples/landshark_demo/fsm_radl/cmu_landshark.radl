@@ -1,0 +1,179 @@
+############# Definitions #############
+
+# Node time periods
+joystick_period : duration 20msec
+gps_period : duration 100msec
+imu_period : duration 10msec
+trigger_period : duration 100msec
+joint_period : duration 50msec
+hokuyo_period : duration 100msec
+
+############# Nodes #############
+
+landshark_teleop : node {
+  DEFS
+    XBOX_WIRED: uint8 1
+    XBOX_WIRELESS: uint8 2
+  DEFS
+    device: string "/dev/xbox_wired/js0"
+    jstype = XBOX_WIRED
+    deadzone: float32 0.20
+    heartbeat_timeout: duration 1000msec
+  PUBLISHES
+    base { TOPIC topics.t__teleop_base PUBLISHER radl.default_pub}
+    estop { TOPIC topics.t__teleop_estop PUBLISHER radl.default_pub}
+    over_ride { TOPIC topics.t__teleop_over_ride PUBLISHER radl.default_pub}
+    turret_pan { TOPIC topics.t__teleop_turret_pan PUBLISHER radl.default_pub}
+    turret_tilt { TOPIC topics.t__teleop_turret_tilt PUBLISHER radl.default_pub}
+    moog_pan { TOPIC topics.t__teleop_moog_pan PUBLISHER radl.default_pub}
+    moog_tilt { TOPIC topics.t__teleop_moog_tilt PUBLISHER radl.default_pub}
+    moog_zoom { TOPIC topics.t__teleop_moog_zoom PUBLISHER radl.default_pub}
+    trigger { TOPIC topics.t__teleop_paintball_trigger PUBLISHER radl.default_pub}
+  PERIOD joystick_period
+  PATH "src/landshark_teleop"
+  CXX { PATH "src" HEADER "LandsharkJoystick.h" CLASS "LandsharkJoystick" FILENAME "LandsharkJoystick.cpp" }
+}
+
+landshark_base : node {
+  DEFS
+    serial_number: uint64 64976
+  PUBLISHES
+    battery { TOPIC topics.t__base_battery_status PUBLISHER radl.default_pub}
+    encoder { TOPIC topics.t__base_wheel_encoder PUBLISHER radl.default_pub}
+    actuator { TOPIC topics.t__base_actuator_input PUBLISHER radl.default_pub}
+    status { TOPIC topics.t__base_status PUBLISHER radl.default_pub}
+  SUBSCRIBES
+    base { TOPIC topics.t__teleop_base MAXLATENCY 50msec SUBSCRIBER radl.default_sub}
+    estop { TOPIC topics.t__teleop_estop MAXLATENCY 10msec SUBSCRIBER radl.default_sub}
+  PERIOD joystick_period
+  PATH "src/landshark_base"
+  CXX { LIB usb4_lib PATH "src" HEADER "LandsharkBase.h" CLASS "LandsharkBase" FILENAME "LandsharkBase.cpp" "usdigital.c" }
+}
+
+landshark_gps : node  {
+  DEFS
+    device: string "/dev/gps/0"
+    baudrate: uint32 38400
+  PUBLISHES
+    navsatfix { TOPIC topics.t__gps_navsatfix PUBLISHER radl.default_pub}
+    twist { TOPIC topics.t__gps_velocity PUBLISHER radl.default_pub}
+    timeref { TOPIC topics.t__gps_timeref PUBLISHER radl.default_pub}
+  PERIOD gps_period
+  CXX { PATH "src/landshark_gps/src" HEADER "LandsharkGpsRadl.h" CLASS "LandsharkGpsRadl" FILENAME "LandsharkGps.cpp" }
+}
+
+
+landshark_imu_front : node  {
+  DEFS
+    device: string "/dev/imu/6223.11365"
+    period = imu_period
+  PUBLISHES
+    imu { TOPIC topics.t__imu_front_imu PUBLISHER radl.default_pub}
+    magnetometer { TOPIC topics.t__imu_front_magnetometer PUBLISHER radl.default_pub}
+  PERIOD imu_period
+  CXX { PATH "src/landshark_imu/src" HEADER "LandsharkImu.h" CLASS "LandsharkImu" FILENAME "LandsharkImu.cpp" "3dmgx2.cpp" }
+}
+
+landshark_imu_rear : node  {
+  DEFS
+    device: string "/dev/imu/6223.36613"
+    period = imu_period
+  PUBLISHES
+    imu { TOPIC topics.t__imu_rear_imu PUBLISHER radl.default_pub}
+    magnetometer { TOPIC topics.t__imu_rear_magnetometer PUBLISHER radl.default_pub}
+  PERIOD imu_period
+  CXX { PATH "src/landshark_imu/src" HEADER "LandsharkImu.h" CLASS "LandsharkImu" FILENAME "LandsharkImu.cpp" "3dmgx2.cpp" }
+}
+
+landshark_paintball : node  {
+  DEFS
+    ip_address: string "192.168.15.78"
+    ip_port: uint16 23
+  SUBSCRIBES
+    trigger { TOPIC topics.t__teleop_paintball_trigger MAXLATENCY 100msec SUBSCRIBER radl.default_sub}
+  PERIOD trigger_period
+  CXX { PATH "src/landshark_paintball/src" HEADER "LandsharkPaintball.h" CLASS "LandsharkPaintball" FILENAME "LandsharkPaintball.cpp" }
+}
+
+landshark_turret : node  {
+  DEFS
+    ip_address: string "192.168.15.77"
+  PUBLISHES
+    status_pan { TOPIC topics.t__turret_status_pan PUBLISHER radl.default_pub}
+    status_tilt { TOPIC topics.t__turret_status_tilt PUBLISHER radl.default_pub}
+  SUBSCRIBES
+    pan { TOPIC topics.t__teleop_turret_pan MAXLATENCY 50msec SUBSCRIBER radl.default_sub}
+    tilt { TOPIC topics.t__teleop_turret_tilt MAXLATENCY 50msec SUBSCRIBER radl.default_sub}
+  PERIOD joint_period
+  PATH "src/landshark_turret"
+  CXX { PATH "src" HEADER "LandsharkTurret.h" CLASS "LandsharkTurret" FILENAME "LandsharkTurret.cpp" LIB dmclnxlib}
+}
+
+landshark_moog : node  {
+  PATH "src/landshark_moog"
+  DEFS
+    device: string "/dev/ttyS0"
+  PUBLISHES
+    status_pan { TOPIC topics.t__moog_status_pan PUBLISHER radl.default_pub}
+    status_tilt { TOPIC topics.t__moog_status_tilt PUBLISHER radl.default_pub}
+    status_zoom { TOPIC topics.t__moog_status_zoom PUBLISHER radl.default_pub}
+  SUBSCRIBES
+    pan { TOPIC topics.t__teleop_moog_pan MAXLATENCY 10msec  SUBSCRIBER radl.default_sub}
+    tilt { TOPIC topics.t__teleop_moog_tilt MAXLATENCY 10msec  SUBSCRIBER radl.default_sub}
+    zoom { TOPIC topics.t__teleop_moog_zoom MAXLATENCY 10msec  SUBSCRIBER radl.default_sub}
+  PERIOD joint_period
+  CXX { PATH "src" HEADER "LandsharkMoog.h" CLASS "LandsharkMoog" FILENAME "LandsharkMoog.cpp" "serial.c" }
+}
+
+landshark_hokuyo_front : node  {
+  DEFS
+    device: string "/dev/hokuyo/H1321007"
+    min_ang: float32 -1.57
+    max_ang: float32 1.57
+    cluster: uint32 1
+    skip: uint32 0
+    calibrate_time: bool true
+    array_size = arrays.hokuyo_range_array_size
+  PUBLISHES
+    scan { TOPIC topics.t__laser_scan_front PUBLISHER radl.default_pub}
+  PERIOD hokuyo_period
+  PATH "src/landshark_hokuyo"
+  CXX { LIB sensor_msgs_lib PATH "src" HEADER "HokuyoRadlNode.h" CLASS "HokuyoRadlNode" FILENAME "HokuyoRadlNode.cpp" "hokuyo.cpp" }
+}
+
+landshark_hokuyo_rear : node  {
+  DEFS
+    device: string "/dev/hokuyo/H1321009"
+    min_ang: float32 -1.57
+    max_ang: float32 1.57
+    cluster: uint32 1
+    skip: uint32 0
+    calibrate_time: bool true
+    array_size = arrays.hokuyo_range_array_size
+  PUBLISHES
+    scan { TOPIC topics.t__laser_scan_rear PUBLISHER radl.default_pub}
+  PERIOD hokuyo_period
+  PATH "src/landshark_hokuyo"
+  CXX { LIB sensor_msgs_lib PATH "src" HEADER "HokuyoRadlNode.h" CLASS "HokuyoRadlNode" FILENAME "HokuyoRadlNode.cpp" "hokuyo.cpp" }
+}
+
+############# Libraries #############
+
+usb4_lib : cmake_library { 
+  PATH "src/landshark_base/cmake"
+  CMAKE_MODULE "USB4"
+}
+
+sensor_msgs_lib : cmake_library { 
+  PATH "/opt/ros/share/sensor_msgs/cmake"
+  CMAKE_MODULE "sensor_msgs"
+}
+
+dmclnxlib : static_library {
+  PATH "src/landshark_turret/src/galil"
+  HEADER_PATHS "dmclnxlib"
+  CXX { PATH "dmclnxlib" FILENAME
+    "dmcbin.c" "dmcdma.c" "dmceth.c" "dmcfmw.c" "dmcint.c" "dmcisa.c" "dmclnx.c" "dmcpci.c" "dmcser.c" "dmcsup.c"
+  }
+}
+

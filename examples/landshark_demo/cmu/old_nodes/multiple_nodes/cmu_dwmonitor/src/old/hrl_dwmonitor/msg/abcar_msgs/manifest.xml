@@ -1,0 +1,16 @@
+<package>
+  <description brief="abcar_msgs">
+
+     abcar_msgs: This package provides the message API to the ROS interface for communicating with the American Built Car/Simulator over CAN.
+
+  </description>
+  <author>Aleksey Nogin, Darrel van Buer, and Gavin Holland, HRL Laboratories, LLC</author>
+  <license>Copyright (C) 2013, HRL Laboratories, LLC. Permission granted to use for HACMS.</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/abcar_msgs</url>
+
+  <depend package="roslib"/>
+  <depend package="std_msgs"/>
+</package>
+
+

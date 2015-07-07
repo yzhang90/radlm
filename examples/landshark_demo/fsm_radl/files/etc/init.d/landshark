@@ -1,0 +1,37 @@
+#!/bin/bash
+# landshark daemon
+# chkconfig: 345 20 80
+# description: roslaunch roscore
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin:/opt/ros/indigo/bin
+NAME=landshark
+DESC="Landshark auto launch system"
+
+start_ros () {  
+  /bin/su hacms /opt/hacms/etc/startup.sh
+}
+
+stop_ros () {
+  /bin/su hacms /opt/hacms/etc/shutdown.sh
+}
+
+case "$1" in
+  start)
+    printf "%-50s" "Starting $NAME..."
+    start_ros
+    ;;
+  stop)
+    printf "%-50s" "Stopping $NAME"
+    stop_ros
+    ;;
+  status)
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {status|start|stop|restart}"
+    exit 1
+esac
+

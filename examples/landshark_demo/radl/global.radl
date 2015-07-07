@@ -1,0 +1,16 @@
+# Node time periods
+joystick_period : duration 20msec
+fsm_period: duration 20msec
+pp_period: duration 20msec
+ccc_period: duration 20msec
+gps_period : duration 100msec
+imu_period : duration 10msec
+trigger_period : duration 100msec
+joint_period : duration 50msec
+hokuyo_period : duration 100msec
+penn_rse_period : duration 20msec
+estimator_period = global.penn_rse_period
+
+base_latency : duration 50msec
+actuator_latency : duration 50msec
+radio_latency : duration 100msec

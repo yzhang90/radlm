@@ -1,0 +1,7 @@
+zeros_9_float64 : array {
+  SIZE 9
+  TYPE "float64"
+  VALUES 
+    0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+}
+

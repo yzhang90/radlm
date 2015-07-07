@@ -1,0 +1,92 @@
+
+* Requirements
+
+** Ubuntu 14.04 (the supported linux distribution)
+
+** ROS indigo
+As described in http://wiki.ros.org/indigo/Installation/Ubuntu
+
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
+wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install ros-indigo-desktop
+
+** Python3.4 (for radler)
+sudo apt-get install python3.4
+sudo apt-get install python3-pip
+sudo pip3 install tarjan
+
+** popt library (landshark base)
+sudo apt-get install libpopt-dev
+
+** USB4 drivers (landshark base)
+Download and install the driver: http://www.usdigital.com/products/interfaces/pc/usb/USB4
+You may use the .deb package available on the website
+
+** bullet library (landshark IMU)
+sudo apt-get install libbullet-dev
+
+** zmq, protobuf (OCU)
+sudo apt-get install -y libzmq3-dev libqt4-dev libprotobuf-dev
+cd /usr/share/cmake-2.8/Modules/ 
+sudo ln -sf FindProtobuf.cmake FindPROTOBUF.cmake
+
+* Setting up the git
+
+** To clone the repository (if it hasn't been done already)
+git clone git@git.ai.sri.com:ros_groovy_base --recursive
+
+** The release is available as an annotated tag. Replace <tag> with the appropriate release tag.
+git fetch --tags
+git checkout <tag>
+
+This should create a new local branch tracking the origin/release branch.
+
+** To make sure all git submodule are pulled and up-to-date
+git submodule update --init --recursive
+
+
+* Building the ROS nodes
+The RADL compiler is called 'radler' and is written in python 3.
+The released version 0.2.1  (phase 2 first release) has all its dependencies
+met with the python3.4 default libraries.
+
+** Generating the nodes
+We need a workspace folder for catkin with a source folder in it where radler will generate
+the ROS package corresponding to the <RADL_FILE>
+
+Instructions from the root of the git to compile a RADL file:
+mkdir -p catkin_ws/src
+radler/radler.sh --ws_dir catkin_ws/src compile <RADL_FILE>
+
+If radler/radler.sh is missing or radler is complaining about parsimonious,
+please make sure that you initialized and updated the git submodules as described above.
+
+* Instructions for installing landshark nodes on baremetal
+
+To remove previous installations, use the following.
+make uninstall
+
+Please use the provided Makefile (radl/Makefile) to install the landshark files.
+cd radl 
+make cleanall
+make <(cmu|sri|penn)_baremetal_plant>
+make baremetal_tgz
+
+This will create 2 tar files: tgz/bm_blackbox.tar.gz tgz/bm_ocu.tar.gz
+These should be installed on the OCU and blackbox machines
+
+On blackbox:
+sudo tar xzf tgz/bm_blackbox.tar.gz -C /
+sudo service plant start
+
+On OCU:
+sudo tar xzf tgz/bm_ocu.tar.gz -C /
+sudo service plant start
+/opt/hacms/bin/ocu_gui_client
+
+
+* Running and testing the system
+Note that the node will not work if you do not have the devices (i.e. if you are not on the landshark).
+sudo service plant start 
+

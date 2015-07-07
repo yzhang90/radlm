@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find landshark_description)/launch/landshark_description.launch"/>
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find landshark_description)/config/rviz_config.vcg" />
+</launch>

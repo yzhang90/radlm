@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+<!--cmu_control_virtualizer_stub-->  
+ <param name="/landshark_control/base_velocity" value="/landshark_control/base_velocity"/>
+ <param name="/landshark_control/deadman" value="/landshark_control/deadman"/>
+ <param name="/landshark_control_cmux/base_velocity" value="/landshark_control_cmux/base_velocity"/>
+ <param name="/landshark/cmu_dynamic_window_monitor/status" value="/landshark/cmu_dynamic_window_monitor/status"/>
+ <param name="/landshark/cmu_sensor_ztest_monitor/status" value="/landshark/cmu_sensor_ztest_monitor/status"/>
+ <param name="/landshark_control/trigger_alarm" value="/landshark_control/trigger_alarm"/>
+ <node pkg="cmu_control_virtualizer_stub" type="cmu_control_virtualizer_stub_node" name="cmu_control_virtualizer_stub_node" output="screen" />
+<!--cmu_control_virtualizer_stub-->
+</launch> 

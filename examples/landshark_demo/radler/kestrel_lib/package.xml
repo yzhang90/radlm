@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package>
+  <name>kestrel_lib</name>
+  <version>0.0.1</version>
+  <description> Kestrel radl communication library </description>
+  <maintainer email="leonard.gerard@sri.com">Léonard Gérard</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
