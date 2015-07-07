@@ -1,3 +1,10 @@
 __pychache__
 *.pyc
 *.radlo
+*.cproject
+*.project
+*.settings
+.tox
+*.egg_info
+*.egg
+.DS_Store
