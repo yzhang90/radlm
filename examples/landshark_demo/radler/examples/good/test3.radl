@@ -1,8 +1,0 @@
-n : node {
-  SUBSCRIBES i1 { TOPIC test_alias.t2 MAXLATENCY 10msec }
-  PUBLISHES o1 { TOPIC t }
-  PERIOD 5msec
-  CXX {HEADER "src/id1.h" CLASS "identity_1"}
-}
-
-t = test_alias.t2

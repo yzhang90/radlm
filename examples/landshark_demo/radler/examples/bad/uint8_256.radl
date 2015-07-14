@@ -1,4 +1,0 @@
-
-# should be rejected because uint8 is too small.
-
-x : uint8 256

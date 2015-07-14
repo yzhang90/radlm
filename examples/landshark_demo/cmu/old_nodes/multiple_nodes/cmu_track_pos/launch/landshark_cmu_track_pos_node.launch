@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node pkg="landshark_cmu_track_pos" type="track_pos.py" name="track_pos"
-  args="$(find landshark_cmu_track_pos)track_pos.in node linear constant"/>
-  <node pkg="landshark_cmu_track_pos" type="pubYaw" name="pubYaw"
-  args="linear"/>
-  <node pkg="landshark_cmu_track_pos" type="pubVel" name="pubVel"
-  args="constant"/>
-</launch>

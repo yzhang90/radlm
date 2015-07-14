@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-<!--launch the pubVel and track_pos nodes -->
-  <!-- <node pkg="landshark_cmu_track_pos" type="pubVel.py" name="pubVel" args="0.5 0.5"/> -->
-  <node pkg="landshark_cmu_track_pos" type="track_pos.py" name="track_pos"
-  args="$(find landshark_cmu_track_pos)track_pos.in pubVel"/> -->
-</launch>

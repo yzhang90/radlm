@@ -1,4 +1,0 @@
-SUBSYSTEM=="usb", ATTR{idVendor}=="04b4", ATTR{idProduct}=="8613", SYMLINK+="usdusb4empty", RUN+="/usr/lib/libusdusb4-1.0/fwload"
-SUBSYSTEM=="usb", ATTR{idVendor}=="09c9", ATTR{idProduct}=="0064", SYMLINK+="usdusb4empty", RUN+="/usr/lib/libusdusb4-1.0/fwload"
-SUBSYSTEM=="usb", ATTR{idVendor}=="09c9", ATTR{idProduct}=="0044", SYMLINK+="usdusb4%n",GROUP="video", MODE="0666"
-

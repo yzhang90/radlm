@@ -1,8 +1,0 @@
-<launch>
-  <group ns="landshark">
-    <param name="tf_prefix" value="landshark" />
-	  <param name="robot_description" command="$(find xacro)/xacro.py $(find landshark_description)/robot/landshark.urdf.xacro" />
-
-	  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-  </group>
-</launch>

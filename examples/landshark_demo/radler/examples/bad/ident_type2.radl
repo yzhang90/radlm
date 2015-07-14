@@ -1,5 +1,0 @@
-i : int32 42
-
-t : topic { FIELDS
-    i
-}

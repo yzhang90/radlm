@@ -1,4 +1,0 @@
-
-# should be rejected because int8 is too small.
-
-x : int8 -129

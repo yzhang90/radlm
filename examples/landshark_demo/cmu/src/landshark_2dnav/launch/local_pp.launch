@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node name="local_pp" pkg="landshark_2dnav" type="local_pp.py"/>
-</launch>

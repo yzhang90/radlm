@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node pkg="cmu_keyboard_teleop" type="cmu_keyboard_teleop" name="cmu_keyboard_teleop">
-    <param name="/sim/sub_topic_prefix" value="/landshark_control" />
-  </node>
-</launch>
-

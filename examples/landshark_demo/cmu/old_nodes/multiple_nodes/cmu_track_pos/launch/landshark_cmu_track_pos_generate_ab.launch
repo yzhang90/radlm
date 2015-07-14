@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node pkg="landshark_cmu_track_pos" type="track_pos.py" name="track_pos"
-  args="$(find landshark_cmu_track_pos)track_pos.in generate constant linear ab"/>
-</launch>

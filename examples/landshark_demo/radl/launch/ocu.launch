@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-  <node pkg="ocu" type="ocu_teleop" name="ocu_teleop" output="screen" />
-  <node pkg="ocu" type="ocu_gui" name="ocu_gui" output="screen" />
-  
-</launch>
-

@@ -1,7 +1,0 @@
-NavfnROS:
-   allow_unknown: false
-   planner_window_x: 1000.0
-   planner_window_y: 1000.0
-   default_tolerance: 0.05
-   visualize_potential: true # false
-   planner_costmap_publish_frequency: 0.2

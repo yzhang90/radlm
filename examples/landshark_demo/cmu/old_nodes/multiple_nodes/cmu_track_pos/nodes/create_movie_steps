@@ -1,2 +1,0 @@
-rosrun landshark_cmu_track_pos animate_waypoint_following.py
-ffmpeg -i drift.mp4 -vf "setpts=3.0*PTS" output.mp4
