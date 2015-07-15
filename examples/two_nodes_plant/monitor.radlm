@@ -1,4 +1,3 @@
-
 two_nodes_a_interceptor : interceptor {
   NODE two_nodes.a
   PUBLISHES
@@ -21,18 +20,14 @@ two_nodes_c_interceptor : interceptor {
   }
 }
 
-
-health_monitor : node {
-  SUBSCRIBES
-    two_nodes_a_report { TOPIC monitor_topics.two_nodes_a_health MAXLATENCY 2msec }
-    two_nodes_c_report { TOPIC monitor_topics.two_nodes_c_health MAXLATENCY 2msec }
-
-  PERIOD 100msec
+null_interceptor : interceptor {
+  NODE two_nodes.null
+  PUBLISHES
+    two_nodes_c_report { TOPIC monitor_topics.two_nodes_c_health }
   CXX {
-    PATH "src/health_monitor"
-    HEADER "HealthMonitor.h"
-    CLASS "HealthMonitor"
-    FILENAME "HealthMonitor.cpp"
+    HEADER "TwoNodesC_Wrapper.h"
+    CLASS "TwoNodesC_Wrapper"
+    FILENAME "TwoNodesC_Wrapper.cpp"
   }
 }
 

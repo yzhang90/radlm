@@ -14,6 +14,7 @@ _module_settings = None
 def interceptor(visitor, node, _):
     node_name = str(node['NODE']._qname)
     infos.interceptors[node_name] = node
+    infos.weaved[str(node._qname)] = False 
   
 
 def collect_interceptors(ast):
@@ -22,7 +23,8 @@ def collect_interceptors(ast):
 
 def implant(visitor, node, _):
     location = str(node['LOCATION']._qname)
-    infos.implants[location] = node['NODES']
+    infos.implants[location] = node
+    infos.weaved[str(node._qname)] = False
 
 def collect_implants(ast):
     v = AstVisitor(fun_dict_of((implant,)), kind='bf')
@@ -31,8 +33,7 @@ def collect_implants(ast):
 def node(visitor, node, _):
     node_name = str(node._qname)
     infos.cxx[node_name] = {'NODE': node,
-                            'MODULE': _module_settings
-                           }
+                            'MODULE': _module_settings}
 
 def collect_cxx(ast):
     v = AstVisitor(fun_dict_of((node,)), kind='bf')

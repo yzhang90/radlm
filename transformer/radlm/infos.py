@@ -29,6 +29,9 @@ interceptors = dict()
 implants = dict()
 "Mapping from location in the plant to node qname to be appended."
 
+weaved = dict()
+"Statistics for whether an interceptor/implant is weaved"
+
 cxx = dict()
 "Mapping from node qname to its corresponding cxx info."
 

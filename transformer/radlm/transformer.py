@@ -12,6 +12,7 @@ from transformer.radlm import infos
 def transform_node(visitor, node, _):
     interceptor = infos.interceptors.get(str(node._qname))
     if interceptor:
+       infos.weaved[str(interceptor._qname)] = True
        if interceptor['PUBLISHES']:
            for pub in interceptor['PUBLISHES']:
                node['PUBLISHES'].append(pub)
@@ -31,13 +32,15 @@ def transform_node(visitor, node, _):
            if cxx['CLASS']:
                node['CXX']['CLASS'] = cxx['CLASS']
 
+
 def transform_linux(visitor, node, _):
     qname = str(node._qname)
     if node._name.startswith('_'):
        qname = qname.replace('.'+node._name, '')
     implant = infos.implants.get(qname)
     if implant:
-       for n in implant:
+       infos.weaved[str(implant._qname)] = True
+       for n in implant['NODES']:
            node['NODES'].append(n)
 
 def do_pass(ast):

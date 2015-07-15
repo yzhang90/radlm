@@ -78,7 +78,10 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
             transformer.do_pass(infos.radl_ast)
             content = pretty_print(infos.radl_ast)
             write_file(infos.ws_dir / infos.source_file.name, content)
-
+    
+    for key in infos.weaved:
+        if infos.weaved[key] is False:
+            print("{} is not weaved".format(key))
     #strip.do_pass(infos.radlm_ast)
     #content = pretty_print(infos.radlm_ast)
     #radl_name = infos.source_file.stem + ".radl"

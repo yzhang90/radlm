@@ -1,0 +1,13 @@
+health_monitor : node {
+  SUBSCRIBES
+    two_nodes_a_report { TOPIC monitor_topics.two_nodes_a_health MAXLATENCY 2msec }
+    two_nodes_c_report { TOPIC monitor_topics.two_nodes_c_health MAXLATENCY 2msec }
+
+  PERIOD 100msec
+  CXX {
+    PATH "src/health_monitor"
+    HEADER "HealthMonitor.h"
+    CLASS "HealthMonitor"
+    FILENAME "HealthMonitor.cpp"
+  }
+}
