@@ -3,10 +3,10 @@ Created on March, 2015
 
 '''
 
-from transformer.radlm.rast import AstNode, AstVisitor
-from transformer.astutils.nodetrees import fun_dict_of
-from transformer.astutils.names import NonExistingIdent
-from transformer.radlm import infos
+from radlm.weaver.rast import AstNode, AstVisitor
+from radlm.astutils.nodetrees import fun_dict_of
+from radlm.astutils.names import NonExistingIdent
+from radlm import infos
 
 def pretty_print(node, indchar='  ', indent=0):
     """ pretty print a node

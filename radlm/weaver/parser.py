@@ -16,15 +16,16 @@ from functools import partial
 
 from parsimonious.exceptions import ParseError
 from parsimonious.grammar import Grammar
-from transformer.astutils.location import Location
-from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
-from transformer.astutils.nodeutils import clean_node, ParseVisitor, spprint_node
-from transformer.astutils.tools import BucketDict, str
-#from transformer.radlm import sanitize, language, infos
-from transformer.radlm import language, infos
-from transformer.radlm.errors import log4, error, internal_error
-from transformer.radlm.metaParser import meta_parser
-from transformer.radlm.rast import AstNode, AstVisitor, Ident
+from radlm.astutils.location import Location
+from radlm.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
+from radlm.astutils.nodeutils import clean_node, ParseVisitor, spprint_node
+from radlm.astutils.tools import BucketDict, str
+#from radlm.weaver import sanitize, language, infos
+from radlm import infos
+from radlm.weaver import language
+from radlm.weaver.errors import log4, error, internal_error
+from radlm.weaver.metaParser import meta_parser
+from radlm.weaver.rast import AstNode, AstVisitor, Ident
 import parsimonious
 
 

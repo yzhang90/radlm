@@ -8,10 +8,11 @@ import distutils.dir_util
 import sys
 import argparse
 
-from transformer.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
-from transformer.radlm import infos, language, gather, wd, strip, transformer, generator
-from transformer.radlm.parser import Semantics
-from transformer.radlm.utils import pretty_print, write_file, ensure_dir
+from radlm.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
+from radlm import infos
+from radlm.weaver import language, gather, wd, weaver, generator
+from radlm.weaver.parser import Semantics
+from radlm.weaver.utils import pretty_print, write_file, ensure_dir
 
 class Exit(Exception):
     def __init__(self, error_code, msg):
@@ -66,7 +67,7 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
         
     gather.collect_interceptors(infos.radlm_ast)
     gather.collect_implants(infos.radlm_ast)
-    strip.do_pass(infos.radlm_ast)
+    #strip.do_pass(infos.radlm_ast)
 
     for child in infos.ws_dir.iterdir():
         if child.suffix == '.radl':
@@ -75,17 +76,13 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
             qname = infos.root_namespace.qualify(infos.source_file.stem)
             with infos.source_file.open() as f:
                 infos.radl_ast = infos.semantics(f.read(), qname, infos.root_namespace)
-            transformer.do_pass(infos.radl_ast)
+            weaver.do_pass(infos.radl_ast)
             content = pretty_print(infos.radl_ast)
             write_file(infos.ws_dir / infos.source_file.name, content)
     
     for key in infos.weaved:
         if infos.weaved[key] is False:
             print("{} is not weaved".format(key))
-    #strip.do_pass(infos.radlm_ast)
-    #content = pretty_print(infos.radlm_ast)
-    #radl_name = infos.source_file.stem + ".radl"
-    #write_file(infos.ws_dir / radl_name, content)
 
 
 def generate_files(project_dir=None, spec_file=None, **_):
@@ -134,14 +131,14 @@ if __name__ == "__main__":
     subs_p = p.add_subparsers(dest='cmd', title='subcommands')
     
     #transformation option
-    transformp = subs_p.add_parser('trans', help='transform radl files')
+    transformp = subs_p.add_parser('weave', help='transform radl files')
     transformp.set_defaults(func=transform_radl)
 
     transformp.add_argument('project_dir', help='the project directory containing radl files and user source code')
     transformp.add_argument('radlm_file', help='the RADLM file used to transform the RADL source file')
  
     #generation option
-    genp = subs_p.add_parser('gen', help='generate files from specificaiton')
+    genp = subs_p.add_parser('compile', help='generate files from specificaiton')
     genp.set_defaults(func=generate_files)
 
     genp.add_argument('project_dir', help='the project directory containing radl files and user source code')

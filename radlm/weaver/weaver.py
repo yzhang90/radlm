@@ -5,11 +5,11 @@ Transform RADL file based on interceptors information
 
 '''
 
-from transformer.radlm.rast import AstVisitor
-from transformer.radlm import infos
+from radlm.weaver.rast import AstVisitor
+from radlm import infos
 
 
-def transform_node(visitor, node, _):
+def weave_node(visitor, node, _):
     interceptor = infos.interceptors.get(str(node._qname))
     if interceptor:
        infos.weaved[str(interceptor._qname)] = True
@@ -33,7 +33,7 @@ def transform_node(visitor, node, _):
                node['CXX']['CLASS'] = cxx['CLASS']
 
 
-def transform_linux(visitor, node, _):
+def weave_linux(visitor, node, _):
     qname = str(node._qname)
     if node._name.startswith('_'):
        qname = qname.replace('.'+node._name, '')
@@ -44,6 +44,6 @@ def transform_linux(visitor, node, _):
            node['NODES'].append(n)
 
 def do_pass(ast):
-    v = AstVisitor({'node' : transform_node,
-                    'linux': transform_linux}, kind='bf')
+    v = AstVisitor({'node' : weave_node,
+                    'linux': weave_linux}, kind='bf')
     v.visit(ast, ())

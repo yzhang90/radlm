@@ -7,7 +7,7 @@ Created on March, 2015
 
 from pathlib import Path
 
-from transformer.astutils.names import RootNamespace
+from radlm.astutils.names import RootNamespace
 
 
 calling_dir = None

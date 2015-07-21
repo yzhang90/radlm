@@ -11,7 +11,7 @@ that is 'regex', '_' (to denote meaning less elements and comments,
 
 from parsimonious import Grammar
 from parsimonious.grammar import rule_syntax
-from transformer.astutils.nodeutils import clean_node
+from radlm.astutils.nodeutils import clean_node
 
 
 meta_keywords = "class|type"

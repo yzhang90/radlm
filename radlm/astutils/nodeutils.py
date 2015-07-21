@@ -8,7 +8,7 @@ Created on May 2014
 from copy import copy
 
 from parsimonious.nodes import Node
-from transformer.astutils.nodetrees import Functor
+from radlm.astutils.nodetrees import Functor
 
 
 nodetreesutils = Functor(Node, 'children', 'expr_name')

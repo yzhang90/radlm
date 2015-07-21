@@ -8,8 +8,9 @@ Created on April, 2015
 import re
 from pathlib import Path
 
-from transformer.radlm import infos, wd
-from transformer.radlm.utils import write_file
+from radlm import infos
+from radlm.weaver import wd
+from radlm.weaver.utils import write_file
 
 spec_infos = {'type'       : None,
               'period'     : None,

@@ -16,7 +16,7 @@ only if the user specified it so.
 
 from pathlib import Path
 
-from transformer.radlm.rast import AstVisitor
+from radlm.weaver.rast import AstVisitor
 
 
 def _wd(visitor, node, wd):
