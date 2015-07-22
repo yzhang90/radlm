@@ -10,11 +10,21 @@ from pathlib import Path
 from radlm.astutils.names import RootNamespace
 
 
+########## Common ##########
+
 calling_dir = None
 "The directory where radlm script was called (it is set by the main)."
 
-script_dir = Path(__file__).absolute()
-"The radler Path directory."
+ws_dir = None
+"The destination Path directory"
+
+source_file = Path()
+"The source Path file being processed now."
+
+########## Compiler ##########
+
+
+########## Weaver ##########
 
 ##########
 # Global properties concerning everything which is loaded
@@ -49,8 +59,3 @@ radl_ast = None
 radlm_ast = None
 "The radlm ast. Actually set by the parser."
 
-ws_dir = None
-"The destination Path directory"
-
-source_file = Path()
-"The source Path file being processed now."

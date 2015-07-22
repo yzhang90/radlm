@@ -1,7 +1,8 @@
 
 '''
-Created on March, 2015
+Created on May, 2014
 
+@author: Léonard Gérard leonard.gerard@sri.com
 '''
 
 version = 'RADLM 0.988'
@@ -100,7 +101,7 @@ class c_class
     HEADER string
     FILENAME string *
     LIB cmake_library/static_library *
-    TYPENAME string ?        #defaults to 'state'
+    TYPENAME string ?        #defaults to the radl defined RADL_STATE macro
     INIT_FUNCTION string ?   #defaults to the radl defined RADL_INIT_FUN macro
     STEP_FUNCTION string ?   #defaults to the radl defined RADL_STEP_FUN macro
     FINISH_FUNCTION string ? #defaults to the radl defined RADL_FINISH_FUN macro
@@ -249,4 +250,3 @@ class implant
     NODES node *
 
 """
-

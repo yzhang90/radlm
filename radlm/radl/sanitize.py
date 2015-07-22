@@ -4,7 +4,7 @@ Created on Jun, 2014
 @author: Léonard Gérard leonard.gerard@sri.com
 '''
 
-from radlm.weaver.rast import AstVisitor, Ident, Alias
+from radlm.radl.rast import AstVisitor, Ident, Alias
 
 def _un_onleaf(visitor, leaf, namespace):
     """ Make sure Alias leaf are target for their name. """

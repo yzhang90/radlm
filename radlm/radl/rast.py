@@ -8,8 +8,8 @@ from collections import Mapping
 
 from radlm.astutils.names import NonExistingIdent
 from radlm.astutils.nodetrees import Functor
-from radlm.weaver import infos
-from radlm.weaver.errors import internal_error, noloc
+from radlm import infos
+from radlm.radl.errors import internal_error, noloc
 
 
 class AlreadyAttached(Exception): pass

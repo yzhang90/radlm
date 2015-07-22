@@ -21,10 +21,10 @@ from radlm.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
 from radlm.astutils.nodeutils import clean_node, ParseVisitor, spprint_node
 from radlm.astutils.tools import BucketDict, str
 #from radlm.weaver import sanitize, language, infos
-from radlm.weaver import language, infos
-from radlm.weaver.errors import log4, error, internal_error
-from radlm.weaver.metaParser import meta_parser
-from radlm.weaver.rast import AstNode, AstVisitor, Ident
+from radlm import infos
+from radlm.radl.errors import log4, error, internal_error
+from radlm.radl.metaParser import meta_parser
+from radlm.radl.rast import AstNode, AstVisitor, Ident
 import parsimonious
 
 
