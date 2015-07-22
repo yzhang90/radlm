@@ -8,8 +8,7 @@ Created on April, 2015
 import re
 from pathlib import Path
 
-from radlm import infos
-from radlm.weaver import wd
+from radlm.weaver import infos, wd
 from radlm.weaver.utils import write_file
 
 spec_infos = {'type'       : None,

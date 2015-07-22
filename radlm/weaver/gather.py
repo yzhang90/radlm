@@ -6,7 +6,7 @@ Created on March, 2015
 
 '''
 from radlm.astutils.nodetrees import fun_dict_of
-from radlm import infos
+from radlm.weaver import infos
 from radlm.weaver.rast import AstVisitor
 
 _module_settings = None

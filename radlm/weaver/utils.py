@@ -6,7 +6,7 @@ Created on March, 2015
 from radlm.weaver.rast import AstNode, AstVisitor
 from radlm.astutils.nodetrees import fun_dict_of
 from radlm.astutils.names import NonExistingIdent
-from radlm import infos
+from radlm.weaver import infos
 
 def pretty_print(node, indchar='  ', indent=0):
     """ pretty print a node

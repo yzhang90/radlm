@@ -7,7 +7,7 @@ Created on June, 2014
 from collections import Callable
 
 from radlm.astutils.location import Location
-from radlm import infos
+from radlm.weaver import infos
 
 #TODO: 7 colorize output https://pypi.python.org/pypi/colorama
 

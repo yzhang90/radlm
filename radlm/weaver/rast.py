@@ -8,7 +8,7 @@ from collections import Mapping
 
 from radlm.astutils.names import NonExistingIdent
 from radlm.astutils.nodetrees import Functor
-from radlm import infos
+from radlm.weaver import infos
 from radlm.weaver.errors import internal_error, noloc
 
 
@@ -215,7 +215,7 @@ def follow_links(on_other_leaf):
 
 def follow_modlocal_links(on_other_leaf):
     def _is_current_module(node):
-        return node._qname.has_root(infos.ast._qname)  # @UndefinedVariable
+        return node._qname.has_root(infos.radl_ast._qname)  # @UndefinedVariable
     def _follow_links(visitor, leaf, acc):
         if isinstance(leaf, Ident) and _is_current_module(leaf._node):
             return visitor.visit(leaf._node, acc)
