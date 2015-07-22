@@ -42,7 +42,7 @@ def transform_radl(project_dir=None, radlm_file=None, **_):
     
     project_dir = Path(project_dir) 
     prepare_workspace(project_dir, 'trans')
-    distutils.dir_util.copy_tree(str(project_dir.resolve()), str(winfos.ws_dir.resolve()))    
+    distutils.dir_util.copy_tree(str(project_dir.resolve()), str(winfos.ws_dir.resolve())) 
 
     ########
     # Bootstrap the semantics from the language definition.
