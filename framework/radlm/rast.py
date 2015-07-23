@@ -6,10 +6,10 @@ Created on May, 2014
 '''
 from collections import Mapping
 
-from radlm.astutils.names import NonExistingIdent
-from radlm.astutils.nodetrees import Functor
-from radlm import infos
-from radlm.radl.errors import internal_error, noloc
+from framework.astutils.names import NonExistingIdent
+from framework.astutils.nodetrees import Functor
+from framework import infos
+from framework.radlm.errors import internal_error, noloc
 
 
 class AlreadyAttached(Exception): pass

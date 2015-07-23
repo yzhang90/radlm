@@ -8,13 +8,16 @@ import distutils.dir_util
 import sys
 import argparse
 
-from radlm import infos
-from radlm.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
-from radlm.radl import language
-from radlm.radl.parser import Semantics
-from radlm.radl.utils import pretty_print, write_file, ensure_dir
+from framework import infos
+from framework.astutils.names import NonExistingIdent, ExistingIdent, RootNamespace
+from framework.radlm import radlmLang
+from framework.radlm.parser import Semantics
+from framework.radlm.utils import pretty_print, write_file, ensure_dir
 
-from radlm.weaver import gather, weaver
+from framework.compiler import specLang
+from framework.compiler.parser import Compiler
+
+from framework.weaver import gather, weaver
 
 
 
@@ -51,7 +54,7 @@ def weave_radl(project_dir=None, radlm_file=None, **_):
     ########
     # Bootstrap the semantics from the language definition.
     ########
-    infos.semantics = Semantics(language)
+    infos.semantics = Semantics(radlmLang)
 
     #processing the radlm file first
     source = Path(radlm_file)
@@ -71,7 +74,6 @@ def weave_radl(project_dir=None, radlm_file=None, **_):
         
     gather.collect_interceptors(infos.radlm_ast)
     gather.collect_implants(infos.radlm_ast)
-    #strip.do_pass(infos.radlm_ast)
 
     for child in infos.ws_dir.iterdir():
         if child.suffix == '.radl':
@@ -90,7 +92,11 @@ def weave_radl(project_dir=None, radlm_file=None, **_):
 
 
 def compile_spec(project_dir=None, spec_file=None, **_):
-     print("compiling")
+    compiler = Compiler(specLang)
+    source = Path(spec_file)
+    with source.open() as f:
+        compiler.parse(f.read())
+
 
 
 if __name__ == "__main__":
@@ -101,7 +107,7 @@ if __name__ == "__main__":
     # Parse arguments
     ########
     p = argparse.ArgumentParser(prog='radlm')
-    p.add_argument('--version_lang', action='version', version='RADLM language ' + language.version)
+    p.add_argument('--version_radlm', action='version', version='RADLM language ' + radlmLang.version)
 
     subs_p = p.add_subparsers(dest='cmd', title='subcommands')
     

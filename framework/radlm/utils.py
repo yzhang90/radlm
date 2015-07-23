@@ -3,10 +3,10 @@ Created on March, 2015
 
 '''
 
-from radlm import infos
-from radlm.radl.rast import AstNode, AstVisitor
-from radlm.astutils.nodetrees import fun_dict_of
-from radlm.astutils.names import NonExistingIdent
+from framework import infos
+from framework.radlm.rast import AstNode, AstVisitor
+from framework.astutils.nodetrees import fun_dict_of
+from framework.astutils.names import NonExistingIdent
 
 def pretty_print(node, indchar='  ', indent=0):
     """ pretty print a node

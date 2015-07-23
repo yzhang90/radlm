@@ -7,7 +7,7 @@ Created on March, 2015
 
 from pathlib import Path
 
-from radlm.astutils.names import RootNamespace
+from framework.astutils.names import RootNamespace
 
 
 ########## Common ##########

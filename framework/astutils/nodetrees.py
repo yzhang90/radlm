@@ -13,8 +13,8 @@ from collections import MutableSequence, Sequence, MutableMapping
 from copy import copy
 from functools import partial
 
-from radlm.astutils.tools import Bunch
-from radlm.radl.errors import internal_error
+from framework.astutils.tools import Bunch
+from framework.radlm.errors import internal_error
 
 
 

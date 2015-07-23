@@ -5,9 +5,9 @@ Created on March, 2015
   node.qname -> interceptor
 
 '''
-from radlm.astutils.nodetrees import fun_dict_of
-from radlm import infos
-from radlm.radl.rast import AstVisitor
+from framework.astutils.nodetrees import fun_dict_of
+from framework import infos
+from framework.radlm.rast import AstVisitor
 
 _module_settings = None
 

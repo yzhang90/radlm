@@ -5,8 +5,8 @@ Transform RADL file based on interceptors information
 
 '''
 
-from radlm import infos
-from radlm.radl.rast import AstVisitor
+from framework import infos
+from framework.radlm.rast import AstVisitor
 
 
 def weave_node(visitor, node, _):

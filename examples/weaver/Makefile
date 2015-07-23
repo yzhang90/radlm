@@ -1,4 +1,4 @@
-RADLM = ../radlm.sh
+RADLM = ../../radlm.sh
 
 .PHONY: two_nodes_plant two_nodes
 
